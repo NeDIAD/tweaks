@@ -8,8 +8,6 @@
 
 tweaks = tweaks or {}
 
-writefile('tweaks')
-
 local fps = 0
 local frameTime = 0
 
