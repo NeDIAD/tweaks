@@ -8,6 +8,21 @@
 
 tweaks = tweaks or {}
 
+local fps = 0
+local frameTime = 0
+
+client.set_event_callback('paint', function()
+    frameTime = globals.absoluteframetime()
+
+    if frameTime > 0 then
+        fps = 1 / frameTime
+    else
+        fps = 0
+    end
+end)
+
+
+local gc = function(value, count) local gram = { }; for i=1, count do gram[i] = value; end return gram; end
 local hg = {'generic', 'head', 'chest', 'stomach', 'left arm', 'right arm', 'left leg', 'right leg', 'neck', '?', 'gear'}
 
 tweaks.presets = {
@@ -318,24 +333,19 @@ local notifications do
     function notifications.new(str, timeout)
         if #active >= 5 then for i,v in ipairs(active) do if not v.disabled then v.disabled = true break end end end
 
-        local self = setmetatable({}, notifications)
+        local self = setmetatable({
+            start = globals.realtime(),
+            lerp = 0,
+            disabled = false,
+            tlerp = 0,
+            ttarg = 1,
+            y = scrH,
+
+        }, notifications)
         timeout = type(timeout) == 'number' and timeout or 5
         str = tostring(str)
 
-        self.start = globals.realtime()
-        self.lerp = 0
-        self.disabled = false
-        self.tlerp = 0
-        self.ttarg = 1
-
-        self.y = scrH
-        
         local push = function()
-            self.ttarg = self.ttarg or 0
-            self.tlerp = self.tlerp or 0
-            self.lerp = self.lerp or 0
-            self.disabled = self.disabled or false
-            self.start = self.start or globals.realtime()
 
             if globals.realtime() - self.start >= timeout and timeout >= 0 then self.ttarg = 0.01 end
             if self.ttarg == 0.01 and self.tlerp <= .05 then self.disabled = true end
@@ -347,16 +357,12 @@ local notifications do
             self.y = Lerp(globals.frametime() * 10, self.y, self.disabled and scrH or offsetY + ((h + 10) * table.find(active, self)))
             self.tlerp = Lerp(globals.frametime() * 20, self.tlerp, self.ttarg)
 
-            if (self.lerp or 0) <= .05 and self.disabled then self:destroy() end
-            if (self.lerp or 0) >= .95 and not self.disabled then self.lerp = 1 end
+            if self.lerp <= .05 and self.disabled then self:destroy() end
+            if self.lerp >= .95 and not self.disabled then self.lerp = 1 end
 
             render.rectangle(scrW / 2 - w / 2, self.y, w, h, 24, 24, 24, 100 * self.lerp, 5)
             renderer.blur(scrW / 2 - w / 2, self.y, w, h)
-            --render.rectangle(scrW / 2 - w / 2, self.y, h, h, 24, 24, 34, 100 * self.lerp, 5)
             render.edge_v(scrW / 2 - w / 2, self.y, h, 255 * self.lerp)
-            --renderer.texture(render.textures.png.logo, scrW / 2 - w / 2 + 16 / 4, self.y + 16 / 4, 16, 16, 255, 255, 255 * self.lerp, 255, 'f')
-
-            self.tlerp = self.tlerp or 0
 
             renderer.text(scrW / 2, self.y + h / 2, 255, 255, 255, 255 * self.tlerp, 'c', w * self.tlerp, str)
         end
@@ -377,6 +383,7 @@ local notifications do
     local ui_data = {}
 
     client.set_event_callback('paint', function()
+        if fps < 30 then assert('Low framerate! Paint event canceled') return false end
         ui_data.lerp = ui_data.lerp or 0
         ui_data.extra = ui_data.extra or false
         ui_data.lerp = Lerp(globals.frametime() * 15, ui_data.lerp, ui.is_menu_open() and (ui_data.extra and 1 or .1) or 0)
