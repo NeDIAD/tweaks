@@ -8,10 +8,12 @@
 
 tweaks = tweaks or {}
 
+writefile('tweaks')
+
 local fps = 0
 local frameTime = 0
 
-client.set_event_callback('paint', function()
+client.set_event_callback('paint_ui', function()
     frameTime = globals.absoluteframetime()
 
     if frameTime > 0 then
@@ -47,6 +49,15 @@ tweaks.presets = {
             'string' = 'string' 
 
         ]]
+    },
+    hitsounds = {
+        -- csgo/sound/ ...
+        -- Disable skeet hs = ESP -> Player Esp -> Hitmarker sound,
+        -- Need to restart if you added new sound
+        -- Only .mp3 & .wav sounds
+
+        'hitsound/hitsound.mp3',
+        'resource/warning.wav',
     }
 }
 
@@ -57,6 +68,45 @@ table.clear = require('table.clear')
 table.find = function(a, b) for i,v in ipairs(a) do if v == b then return i end end end
 table.count = function(a) local r = 0 for i, v in ipairs(a) do r = r + 1 end for i, v in pairs(a) do r = r + 1 end return r end
 math.clamp = function(a, b, c) return math.max(b, math.min(c, a)) end
+
+--[[
+
+    FFI
+
+    Hitsound by heydanlag
+
+]]
+
+local function vmt_entry(instance, index, type)
+	return ffi.cast(type, (ffi.cast('void***', instance)[0])[index])
+end
+
+local function vmt_bind(module, interface, index, typestring)
+	local instance = client.create_interface(module, interface) or error('invalid interface')
+	local success, typeof = pcall(ffi.typeof, typestring)
+	if not success then
+		error(typeof, 2)
+	end
+	local fnptr = vmt_entry(instance, index, typeof) or error('invalid vtable')
+	return function(...)
+		return fnptr(instance, ...)
+	end
+end
+
+local playsound = vmt_bind("vguimatsurface.dll", "VGUI_Surface031", 82, "void(__thiscall*)(void*, const char*)")
+
+local function normal_sound(name)
+	if name:find('_') then
+		name = name:gsub('_', ' ')
+	end
+	if name:find('.mp3') then
+		name = name:gsub('.mp3', '')
+	end
+	if name:find('.wav') then
+		name = name:gsub('.wav', '')
+	end
+	return name
+end
 
 local color do
     local hex_rgb = function (hex)
@@ -115,6 +165,7 @@ function table.Reverse(tbl)
     return reverse
 end
 
+
 local function Lerp(d, h, t)
     if not d or not h or not t then return 0 end
 
@@ -159,7 +210,7 @@ local function process(str) tweaks.print('Processing ' .. tweaks.colors.white ..
 local function process_end(str) tweaks.print('Processed ' .. tweaks.colors.white .. str) end
 
 tweaks.print('Processing started ')
-tweaks.start = globals.realtime()
+tweaks.start = client.timestamp()
 tweaks.print('Init version: ' .. tweaks.colors.white .. tweaks.settings.version)
 
 if tweaks.settings.dev then tweaks.print('Loaded in ' .. tweaks.colors.white .. 'dev-mode' .. tweaks.colors.gray ..'!') end
@@ -218,8 +269,8 @@ local mouse do
         local newX = mX - offsetX
         local newY = mY - offsetY
 
-        assert('x1, x2, y1, y2, resX, resY: '..' '.. x1..' '.. x2..' '.. y1..' '.. y2..' '.. newX..' '.. newY)
-        assert('mX, mY, scrW, scrH: '.. mX ..' '.. mY..' '.. scrW..' '.. scrH)
+        --assert('x1, x2, y1, y2, resX, resY: '..' '.. x1..' '.. x2..' '.. y1..' '.. y2..' '.. newX..' '.. newY)
+        --assert('mX, mY, scrW, scrH: '.. mX ..' '.. mY..' '.. scrW..' '.. scrH)
 
         if newX < 0 then assert('x < 0') newX = 0 end
         if newY < 0 then assert('y < 0') newY = 0 end
@@ -232,18 +283,131 @@ local mouse do
     process_end('Mouse library')
 end
 
---[[local logo = readfile('tweaks_logo.png')
+local widgets do
+    process('Widgets library')
 
-if not logo then
-    http.get('https://raw.githubusercontent.com/NeDIAD/tweaks/main/logo.png', function (success, raw)
-        if success and string.sub(raw.body, 2, 4) == 'PNG' then
-            render.textures.png.logo = renderer.load_png(raw.body, 64, 64)
-            writefile('tweaks_logo.png', raw.body)
+    local paint_queue = {}
+    local lerp = 0
+    local a = false
+
+    widgets = {}
+    widgets.__index = widgets
+
+    function widgets.new(x, y, w, h, id, draggable, paint_ui)
+        if not id then assert('No id!') id = table.count(paint_queue) end
+        tostring(id)
+
+        x = type(x) == 'number' and x or 0
+        y = type(y) == 'number' and y or 0
+        w = type(w) == 'number' and w or 100
+        h = type(h) == 'number' and h or 100
+
+        draggable = type(draggable) == 'table' and draggable or {x = true, y = true}
+
+        local self = setmetatable({}, widgets)
+
+        local scrW, scrH = client.screen_size()
+
+        local sliderX, sliderY = ui.new_slider('MISC', 'Settings', id .. ':x' , 0, scrW, x), ui.new_slider('MISC', 'Settings', id .. ':y', 0, scrH, y)
+        ui.set_visible(sliderX, false); ui.set_visible(sliderY, false)
+
+        self.ui = {x = sliderX, y = sliderY}
+        self.cord = {x = x, y = y, w = w, h = h}
+
+        ui.set_callback(sliderX, function() self.cord.x = ui.get(sliderX) end)
+        ui.set_callback(sliderY, function() self.cord.y = ui.get(sliderY) end)
+        local extra_lerp = .6
+        local toggle = false
+        local start = {}
+        
+        local rX, rY = x, y
+        local x, y = self.cord.x, self.cord.y
+
+        self.push = function()
+            local statement = toggle or mouse.inbounds(self.cord.x, self.cord.y, self.cord.w, self.cord.h)
+            
+            if globals.mapname() then
+                extra_lerp = Lerp(globals.frametime() * 10, extra_lerp, statement and 0 or .6)
+
+                if not draggable.x and self.cord.x ~= rX then self.cord.x = rX end
+                if not draggable.y and self.cord.y ~= rY then self.cord.y = rY end
+
+                x = Lerp(globals.frametime() * 10, x, self.cord.x)
+                y = Lerp(globals.frametime() * 10, y, self.cord.y)
+            else
+                lerp = lerp or 1
+                extra_lerp = extra_lerp or 0
+                x = self.cord.x
+                y = self.cord.y
+            end
+
+            render.rectangle(x, y, self.cord.w, self.cord.h, 255, 255, 255, 100 * math.clamp((lerp - extra_lerp), 0, 1), 8)
+            --renderer.blur(self.cord.x, self.cord.y, self.cord.w, self.cord.h, math.clamp((lerp - extra_lerp), 0, 1), math.clamp((lerp - extra_lerp), 0, 1))
+
+            if mouse.held() and (statement) and (draggable.x or draggable.y) and (a == id or not a) then
+                if table.count(start) <= 0 or not start.x or not start.y or not start.mX or not start.mY then 
+                    local mX, mY = ui.mouse_position()
+
+                    start = {
+                        mX = mX,
+                        mY = mY,
+                        x = self.cord.x,
+                        y = self.cord.y,
+                    }
+                end
+                toggle = true
+                a = id
+
+                local nX, nY = mouse.calc(start.x, start.y, start.mX, start.mY, self.cord.w, self.cord.h)
+
+                if nX and nY then
+                    if draggable.x then ui.set(self.ui.x, nX) end
+                    if draggable.y then ui.set(self.ui.y, nY) end
+                end
+            else
+                if a == id then a = nil end
+                toggle = false
+                start = {}
+            end
+
+            paint_ui()
+        end
+
+        paint_queue[id] = self
+
+        self.id = id
+
+        return self
+    end
+
+    client.set_event_callback('paint_ui', function()
+        if fps < 25 then assert('Low framerate! Render cancelled!') return false end
+
+        lerp = lerp or 0
+
+        if globals.mapname() then
+            lerp = Lerp(globals.frametime() * 10, lerp, ui.is_menu_open() and 1 or 0)
+
+            if lerp < .05 then return false end
+        else
+            lerp = 1
+        end
+
+        for i,v in pairs(paint_queue) do
+            if type(v) ~= 'table' or not v.push then goto continue end
+
+            v.push()
+
+            ::continue::
         end
     end)
-else
-    render.textures.png.logo = renderer.load_png(readfile('tweaks_logo.png'), 64, 64)
-end]]
+
+    process_end('Widgets library')
+end
+
+--widgets.new(nil, nil, nil, nil, nil)
+--widgets.new(nil, nil, nil, nil, nil)
+--widgets.new(nil, nil, nil, nil, nil)
 
 local t, l = 'Lua', 'A'
 
@@ -314,55 +478,101 @@ end
 
 local notifications do
     process('Notifications')
-    local scrW, scrH = client.screen_size()
-    local active = {}
-    local slide = ui.new_slider(t, 'B', 'notification:y_locked', 0, scrW, 700)
-    local offsetY = ui.get(slide)
-    ui.set_visible(slide, false)
 
-    ui.set_callback(slide, function()
-        local slide = ui.get(slide)
-        offsetY = slide
+    local scrW, scrH = client.screen_size()
+
+    local notify_h, notify_off = 22, 10
+    local notify_max = 5
+
+    local w, h = 300, (notify_h + notify_off) * notify_max + notify_off
+    local active = {}
+    local show_notify
+    local widget = widgets.new(scrW / 2 - w / 2, 700, w, h, 'notifications', {x = false, y = true}, function()
+    
+        if table.count(active) <= 0 and not show_notify then
+            data = {
+                result = (client.random_int(1, 2) == 1 and true or false),
+                hitgroup = client.random_int(1, #hg - 1),
+                damage = client.random_int(1, 100)
+            }
+
+            data.reason = data.result and nil or 'spread'
+            show_notify = notifications.new(tweaks.colors[data.result and 'green' or 'red'] .. 'FF• ' .. tweaks.colors.gray .. (data.result and 'FFHit ' or 'FFMissed ') .. tweaks.colors.white .. 'FF' .. 'ekzoterik' .. tweaks.colors.gray .. 'FF\'s ' .. tweaks.colors.white .. 'FF' .. hg[data.hitgroup + 1] .. tweaks.colors.gray .. 'FF ~ ' .. tweaks.colors.white .. 'FF' .. (data.result and data.damage or data.reason), -1) 
+        elseif show_notify and table.count(active) > 2 then
+            show_notify.pre_disabled = true
+            show_notify = nil
+        end
+
     end)
+
+
+    data = {
+            result = (client.random_int(1, 2) == 1 and true or false),
+            hitgroup = client.random_int(1, #hg - 1),
+            damage = client.random_int(1, 100)
+        }
+
+        data.reason = data.result and nil or 'spread'
+
+        local to_shownotify
 
     notifications = {}
     notifications.__index = notifications
 
     function notifications.new(str, timeout)
-        if #active >= 5 then for i,v in ipairs(active) do if not v.disabled then v.disabled = true break end end end
-
-        local self = setmetatable({
-            start = globals.realtime(),
-            lerp = 0,
-            disabled = false,
-            tlerp = 0,
-            ttarg = 1,
-            y = scrH,
-
-        }, notifications)
-        timeout = type(timeout) == 'number' and timeout or 5
+        if not str then return false end
         str = tostring(str)
 
+        timeout = type(timeout) == 'number' and timeout or 5
+        
+
+        if #active >= notify_max then
+            for i,v in ipairs(active) do
+                if not v.disabled then v.disabled = true break end
+            end
+        end
+
+        local self = setmetatable({}, notifications)
+
+        self.start = globals.realtime()
+        self.pre_disabled = false
+        self.disabled = false
+
+        self.lerp = {
+            text = 0.1,
+            global = 0,
+            y = scrH
+        }
+
         local push = function()
+            if (globals.realtime() - self.start > timeout and timeout >= 0) or self.pre_disabled then self.pre_disabled = true; self.disabled = (self.pre_disabled and self.lerp.text <= .2) end
 
-            if globals.realtime() - self.start >= timeout and timeout >= 0 then self.ttarg = 0.01 end
-            if self.ttarg == 0.01 and self.tlerp <= .05 then self.disabled = true end
+            local tW, tH = renderer.measure_text('', str)
+            local target_y = widget.cord.y + notify_off + ((notify_h + notify_off) * (table.find(active, self) - 1))
 
-            local w, h = renderer.measure_text('', str)
-            w = w + 50 * self.lerp
-            h = h + 10
-            self.lerp = Lerp(globals.frametime() * 10, self.lerp, self.disabled and 0 or 1)
-            self.y = Lerp(globals.frametime() * 10, self.y, self.disabled and scrH or offsetY + ((h + 10) * table.find(active, self)))
-            self.tlerp = Lerp(globals.frametime() * 20, self.tlerp, self.ttarg)
+            if globals.mapname() then
+                if self.lerp.global <= .05 and self.disabled then self:destroy() end
 
-            if self.lerp <= .05 and self.disabled then self:destroy() end
-            if self.lerp >= .95 and not self.disabled then self.lerp = 1 end
+                self.lerp.text = Lerp(globals.frametime() * 10, self.lerp.text, self.lerp.global >= .9 and (self.pre_disabled and 0.1 or 1) or 0)
+                self.lerp.global = Lerp(globals.frametime() * 10, self.lerp.global, self.disabled and 0 or 1)
+                self.lerp.y = Lerp(globals.frametime() * 10, self.lerp.y, self.disabled and scrH or target_y)
 
-            render.rectangle(scrW / 2 - w / 2, self.y, w, h, 24, 24, 24, 100 * self.lerp, 5)
-            renderer.blur(scrW / 2 - w / 2, self.y, w, h)
-            render.edge_v(scrW / 2 - w / 2, self.y, h, 255 * self.lerp)
+                if self.lerp.global >= .95 and not self.disabled then self.lerp.global = 1 end
+            else
+                self.lerp = self.lerp or {}
+                self.lerp.y = target_y
+                self.lerp.text = 1
+                self.lerp.global = 1
+            end
 
-            renderer.text(scrW / 2, self.y + h / 2, 255, 255, 255, 255 * self.tlerp, 'c', w * self.tlerp, str)
+            local w = (tW + 50) * self.lerp.global
+
+            render.rectangle(scrW / 2 - w / 2, self.lerp.y, w, notify_h, 24, 24, 24, 100 * self.lerp.global, 8)
+            renderer.blur(scrW / 2 - w / 2, self.lerp.y, w, notify_h)
+            render.edge_v(scrW / 2 - w / 2, self.lerp.y, notify_h, 255 * self.lerp.global)
+            if not self.disabled then
+                renderer.text(scrW / 2, self.lerp.y + notify_h / 2, 255, 255, 255, 255, 'c', w * self.lerp.text, str)
+            end
         end
 
         self.push = push
@@ -373,60 +583,22 @@ local notifications do
     end
 
     function notifications:destroy()
-        local found = table.find(active, self)
-        assert('Remove-notify: '.. found)
-        table.remove(active, found)
+        assert('Removed notification')
+        table.remove(active, table.find(active, self))
     end
 
-    local ui_data = {}
-
-    client.set_event_callback('paint', function()
-        if fps < 30 then assert('Low framerate! Paint event canceled') return false end
-        ui_data.lerp = ui_data.lerp or 0
-        ui_data.extra = ui_data.extra or false
-        ui_data.lerp = Lerp(globals.frametime() * 15, ui_data.lerp, ui.is_menu_open() and (ui_data.extra and 1 or .1) or 0)
-
-
-        if (ui_data.lerp or 0) >= .05 then
-            local x, y, w, h = scrW / 2 - 300 / 2, offsetY + 22, 300, 32 * 5 + 10
-            render.rectangle(x, y, w, h, 200, 200, 200, 100 * ui_data.lerp, 5)
-
-
-            if #active <= 0 and not ui_data.notify then 
-                data = {
-                    result = (client.random_int(1, 2) == 1 and true or false),
-                    hitgroup = client.random_int(1, #hg - 1),
-                    damage = client.random_int(1, 100)
-                }
-
-                data.reason = data.result and nil or 'spread'
-                ui_data.notify = notifications.new(tweaks.colors[data.result and 'green' or 'red'] .. 'FF• ' .. tweaks.colors.gray .. (data.result and 'FFHit ' or 'FFMissed ') .. tweaks.colors.white .. 'FF' .. 'ekzoterik' .. tweaks.colors.gray .. 'FF\'s ' .. tweaks.colors.white .. 'FF' .. hg[data.hitgroup + 1] .. tweaks.colors.gray .. 'FF ~ ' .. tweaks.colors.white .. 'FF' .. (data.result and data.damage or data.reason), -1) 
-            elseif #active > 1 and ui_data.notify then ui_data.notify.ttarg = 0.01 ui_data.notify = nil end
-
-            ui_data.extra = mouse.inbounds(x, y, w, h)
-
-            if mouse.held() and (ui_data.extra or ui_data.allow) then
-                if not ui_data.start then ui_data.start = {}; ui_data.start.X, ui_data.start.Y = ui.mouse_position() ui_data.start.Y2 = offsetY end
-                local nX, nY = mouse.calc(x, ui_data.start.Y2, ui_data.start.X, ui_data.start.Y, w, h)
-                ui_data.allow = true
-
-                assert('nX: '.. nX ..' nY: ' .. nY)
-                    
-                if nY then
-                    ui.set(slide, nY)
-                end
-            else
-                ui_data.allow = false
-                ui_data.start = nil
-            end
-        elseif ui_data.notify then
-            ui_data.notify.ttarg = 0.01
-            ui_data.notify = nil
-        end
+    client.set_event_callback('paint_ui', function()
+        if fps < 25 then assert('Low framerate! Render cancelled!') return false end
 
         for i,v in ipairs(active) do
+            if type(v) ~= 'table' or not v.push then goto continue end
+
             v.push()
+
+            ::continue::
         end
+
+        if show_notify and not ui.is_menu_open() then show_notify.pre_disabled = true show_notify = nil end
     end)
 
     process_end('Notifications')
@@ -451,10 +623,49 @@ misc:add(filter)
 
 ui.set_callback(filter, function()
     local _ = ui.get(filter)
-
+    
     cvar.con_filter_enable:set_int(_ and 1 or 0)
 	cvar.con_filter_text:set_string(_ and 'tweaks.lua' or '')
 end)
+
+local hitsound do
+    process('Hit-sound')
+    label('Hit-sound')
+    local checkbox = ui.new_checkbox(t, l, 'Enable custom hit-sound')
+    misc:add(checkbox)
+
+    local sounds = {
+
+    }
+
+    local unpack_ = {}
+
+    local function new(sound)
+        local norm = normal_sound(sound)
+		sounds[norm] = sound
+        table.insert(unpack_, norm)
+    end
+    
+    for i,sound in ipairs(tweaks.presets.hitsounds) do
+        local norm = normal_sound(sound)
+		sounds[norm] = sound
+        table.insert(unpack_, norm)
+    end
+
+    local sound = ui.new_combobox(t, l, 'Custom Hit-Sound', unpack(unpack_))
+    misc:add(sound, function() return ui.get(checkbox) end)
+
+    ui.set_callback(checkbox, function()
+        local _ = ui.get(checkbox)
+
+        client[(_ and 'set' or 'unset') .. '_event_callback']('aim_hit', function()
+            assert('Playsound')
+            playsound(sounds[ui.get(sound)])
+        end)
+    end)
+
+    process_end('Hit-sound')
+end
 
 local trashtalk do
     process('Trash-talk')
@@ -706,6 +917,8 @@ local clantag do
         local _ = ui.get(checkbox)
 
         client[(_ and 'set' or 'unset') .. '_event_callback']('net_update_end', push)
+
+        if not _ then client.set_clan_tag('') end
     end)
     
     process_end('Clan-tag')
@@ -792,5 +1005,7 @@ local autobuy do
     process_end('Auto-buy')
 end
 
-tweaks.print('Processed! '.. tweaks.colors.white ..'(' .. globals.realtime() - tweaks.start .. 's)')
-notifications.new(tweaks.colors.green ..'FF• '.. tweaks.colors.gray ..'FFProcessed! '.. tweaks.colors.white ..'FF' .. globals.realtime() - tweaks.start .. 's')
+client.set_event_callback('shutdown', function() client.set_clan_tag('') end)
+
+tweaks.print('Processed! '.. tweaks.colors.white ..'(' .. string.format('%.2f', client.timestamp() - tweaks.start) .. 's)')
+notifications.new(tweaks.colors.green ..'FF• '.. tweaks.colors.gray ..'FFProcessed! '.. tweaks.colors.white ..'FF' .. string.format('%.2f', client.timestamp() - tweaks.start) .. 's')
