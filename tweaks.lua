@@ -21,8 +21,6 @@ client.set_event_callback('paint', function()
     end
 end)
 
-
-local gc = function(value, count) local gram = { }; for i=1, count do gram[i] = value; end return gram; end
 local hg = {'generic', 'head', 'chest', 'stomach', 'left arm', 'right arm', 'left leg', 'right leg', 'neck', '?', 'gear'}
 
 tweaks.presets = {
