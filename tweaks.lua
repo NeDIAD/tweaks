@@ -170,7 +170,7 @@ local function Lerp(d, h, t)
 	if d > 1 then return to end
     if d < 0 then return from end
     
-	return h + ( t - h ) * d 
+	return (h + ( t - h ) * d or 0) 
 end
 
 tweaks.settings = {}
@@ -226,6 +226,10 @@ local render do
     }
 
     function render.rectangle(x, y, w, h, r, g, b, a, radius)
+        x = math.floor(x); y = math.floor(y); w = math.floor(w); h = math.floor(h)
+
+        if w < 20 then w = 20 end
+
         renderer.rectangle(x + radius, y, w - 2 * radius, h, r, g, b, a)
         renderer.rectangle(x, y + radius, radius, h - 2 * radius, r, g, b, a)
         renderer.rectangle(x + w - radius, y + radius, radius, h - 2 * radius, r, g, b, a)
@@ -291,7 +295,7 @@ local widgets do
     widgets = {}
     widgets.__index = widgets
 
-    function widgets.new(x, y, w, h, id, draggable, paint_ui)
+    function widgets.new(x, y, w, h, id, draggable, paint_ui, corner)
         if not id then assert('No id!') id = table.count(paint_queue) end
         tostring(id)
 
@@ -299,6 +303,7 @@ local widgets do
         y = type(y) == 'number' and y or 0
         w = type(w) == 'number' and w or 100
         h = type(h) == 'number' and h or 100
+        corner = type(corner) == 'number' and corner or 8
 
         draggable = type(draggable) == 'table' and draggable or {x = true, y = true}
 
@@ -311,6 +316,8 @@ local widgets do
 
         self.ui = {x = sliderX, y = sliderY}
         self.cord = {x = x, y = y, w = w, h = h}
+        self.cord_lerp = {x = x, y = y, w = w, h = h}
+        self.paint = true
 
         ui.set_callback(sliderX, function() self.cord.x = ui.get(sliderX) end)
         ui.set_callback(sliderY, function() self.cord.y = ui.get(sliderY) end)
@@ -319,27 +326,21 @@ local widgets do
         local start = {}
         
         local rX, rY = x, y
-        local x, y = self.cord.x, self.cord.y
 
         self.push = function()
+            if not self.paint then return false end
             local statement = toggle or mouse.inbounds(self.cord.x, self.cord.y, self.cord.w, self.cord.h)
             
-            if globals.mapname() then
-                extra_lerp = Lerp(globals.frametime() * 10, extra_lerp, statement and 0 or .6)
+            extra_lerp = Lerp(globals.frametime() * 10, extra_lerp, statement and 0 or .6)
+            if not draggable.x and self.cord.x ~= rX then assert('X Coord!') self.cord.x = rX end
+            if not draggable.y and self.cord.y ~= rY then assert('Y Coord!') self.cord.y = rY end
+            self.cord_lerp.x = Lerp(globals.frametime() * 10, x, self.cord.x)
+            self.cord_lerp.y = Lerp(globals.frametime() * 10, y, self.cord.y)
 
-                if not draggable.x and self.cord.x ~= rX then self.cord.x = rX end
-                if not draggable.y and self.cord.y ~= rY then self.cord.y = rY end
+            x = self.cord_lerp.x
+            y = self.cord_lerp.y
 
-                x = Lerp(globals.frametime() * 10, x, self.cord.x)
-                y = Lerp(globals.frametime() * 10, y, self.cord.y)
-            else
-                lerp = lerp or 1
-                extra_lerp = extra_lerp or 0
-                x = self.cord.x
-                y = self.cord.y
-            end
-
-            render.rectangle(x, y, self.cord.w, self.cord.h, 255, 255, 255, 100 * math.clamp((lerp - extra_lerp), 0, 1), 8)
+            render.rectangle(x, y, self.cord.w, self.cord.h, 255, 255, 255, 100 * math.clamp((lerp - extra_lerp), 0, 1), corner)
             --renderer.blur(self.cord.x, self.cord.y, self.cord.w, self.cord.h, math.clamp((lerp - extra_lerp), 0, 1), math.clamp((lerp - extra_lerp), 0, 1))
 
             if mouse.held() and (statement) and (draggable.x or draggable.y) and (a == id or not a) then
@@ -368,7 +369,10 @@ local widgets do
                 start = {}
             end
 
-            paint_ui()
+            self.cord_lerp.w = w
+            self.cord_lerp.h = h
+
+            if paint_ui then paint_ui() end
         end
 
         paint_queue[id] = self
@@ -379,24 +383,27 @@ local widgets do
     end
 
     client.set_event_callback('paint_ui', function()
-        if fps < 25 then assert('Low framerate! Render cancelled!') return false end
+        --if fps < 25 then assert('Low framerate! Render cancelled!') return false end
 
         lerp = lerp or 0
 
-        if globals.mapname() then
-            lerp = Lerp(globals.frametime() * 10, lerp, ui.is_menu_open() and 1 or 0)
-
-            if lerp < .05 then return false end
-        else
-            lerp = 1
-        end
+        lerp = Lerp(globals.frametime() * 10, lerp, ui.is_menu_open() and 1 or 0)
+        if (lerp or 0) < .05 then return false end
 
         for i,v in pairs(paint_queue) do
             if type(v) ~= 'table' or not v.push then goto continue end
 
-            v.push()
+            local state, err = pcall(v.push)
+            if not state then assert(err) end
 
             ::continue::
+        end
+    end)
+
+    client.set_event_callback('shutdown', function()
+        for i,v in pairs(paint_queue) do
+            --ui.set(v.ui.x, v.cord.x)
+            --ui.set(v.ui.y, v.cord.y)
         end
     end)
 
@@ -543,25 +550,21 @@ local notifications do
         }
 
         local push = function()
-            if (globals.realtime() - self.start > timeout and timeout >= 0) or self.pre_disabled then self.pre_disabled = true; self.disabled = (self.pre_disabled and self.lerp.text <= .2) end
+            if not globals.mapname() then if show_notify ~= self then self:destroy() return false end self.start = globals.realtime() end
+            
+            local state, err = pcall(function() if self.lerp.global < 0 then end end)
+            if not state then assert('Memory check failure, destroying notification..') self:destroy() return false end
+
+            if (globals.realtime() - self.start > (globals.mapname() and timeout or 10) and timeout >= 0) or self.pre_disabled then self.pre_disabled = true; self.disabled = (self.pre_disabled and self.lerp.text <= .2) end
 
             local tW, tH = renderer.measure_text('', str)
             local target_y = widget.cord.y + notify_off + ((notify_h + notify_off) * (table.find(active, self) - 1))
 
-            if globals.mapname() then
-                if self.lerp.global <= .05 and self.disabled then self:destroy() end
-
-                self.lerp.text = Lerp(globals.frametime() * 10, self.lerp.text, self.lerp.global >= .9 and (self.pre_disabled and 0.1 or 1) or 0)
-                self.lerp.global = Lerp(globals.frametime() * 10, self.lerp.global, self.disabled and 0 or 1)
-                self.lerp.y = Lerp(globals.frametime() * 10, self.lerp.y, self.disabled and scrH or target_y)
-
-                if self.lerp.global >= .95 and not self.disabled then self.lerp.global = 1 end
-            else
-                self.lerp = self.lerp or {}
-                self.lerp.y = target_y
-                self.lerp.text = 1
-                self.lerp.global = 1
-            end
+            if self.lerp.global <= .05 and self.disabled then self:destroy() end
+            self.lerp.text = Lerp(globals.frametime() * 10, self.lerp.text, self.lerp.global >= .9 and (self.pre_disabled and 0.1 or 1) or 0)
+            self.lerp.global = Lerp(globals.frametime() * 10, self.lerp.global, self.disabled and 0 or 1)
+            self.lerp.y = Lerp(globals.frametime() * 10, self.lerp.y, self.disabled and scrH or target_y)
+            if self.lerp.global >= .95 and not self.disabled then self.lerp.global = 1 end
 
             local w = (tW + 50) * self.lerp.global
 
@@ -586,12 +589,13 @@ local notifications do
     end
 
     client.set_event_callback('paint_ui', function()
-        if fps < 25 then assert('Low framerate! Render cancelled!') return false end
+        --if fps < 25 then assert('Low framerate! Render cancelled!') return false end
 
         for i,v in ipairs(active) do
             if type(v) ~= 'table' or not v.push then goto continue end
 
-            v.push()
+            local state, err = pcall(v.push)
+            if not state then assert(err) end
 
             ::continue::
         end
@@ -610,9 +614,15 @@ local function unpack_event(data)
     return victim, attacker
 end
 
-local function label(str) ui.new_label(t, l, tweaks.colors.white .. 'FF • »'.. tweaks.colors.base ..'FF '.. str) end
+local function label(str, tab) local lbl = ui.new_label(t, l, tweaks.colors.white .. 'FF • »'.. tweaks.colors.base ..'FF '.. str) tab:add(lbl) end
 
 local function contain(element, needle) return table.find(ui.get(element), needle) end
+
+--[[
+
+    MISC
+
+]]
 
 local misc = tabs.new('Misc')
 
@@ -628,7 +638,7 @@ end)
 
 local hitsound do
     process('Hit-sound')
-    label('Hit-sound')
+    label('Hit-sound', misc)
     local checkbox = ui.new_checkbox(t, l, 'Enable custom hit-sound')
     misc:add(checkbox)
 
@@ -667,7 +677,7 @@ end
 
 local trashtalk do
     process('Trash-talk')
-    label('Trash-Talk')
+    label('Trash-Talk', misc)
 
     local checkbox = ui.new_checkbox(t, l, 'Enable trash-talk')
     misc:add(checkbox)
@@ -700,11 +710,11 @@ local trashtalk do
         if entity.is_enemy(victim) and attacker == entity.get_local_player() and contain(events, 'Kill') then
             assert('Info: Trash talk (kill)')
 
-            client.exec('say ', string.format(get_phrase('kill'), entity.get_player_name(victim)))
+            client.exec('say ' .. string.format(get_phrase('kill'), entity.get_player_name(victim)))
         elseif entity.is_enemy(attacker) and victim == entity.get_local_player() and contain(events, 'Death') then
             assert('Info: Trash talk (death)')
 
-            client.exec('say ', string.format(get_phrase('death'), entity.get_player_name(attacker)))
+            client.exec('say ' .. string.format(get_phrase('death'), entity.get_player_name(attacker)))
         elseif tweaks.settings.dev then
             tweaks.print('Info: skip')
         end
@@ -724,7 +734,7 @@ end
 
 local logger do
     process('Logger')
-    label('Logger')
+    label('Logger', misc)
 
     local checkbox = ui.new_checkbox(t, l, 'Enable logger')
     local outcome = ui.new_multiselect(t, l, 'Logger outcome', 'Notification', 'Console')
@@ -801,7 +811,7 @@ local logger do
 
     local aim_log = {}
 
-    client.set_event_callback('aim_fire', function(shot) aim_log[shot.id] = shot end)
+    client.set_event_callback('aim_fire', function(shot) shot.backtrack = globals.tickcount() - shot.tick aim_log[shot.id] = shot end)
 
     client.set_event_callback('aim_hit', function(data)
         local full = aim_log[data.id]
@@ -848,7 +858,7 @@ end
 
 local clantag do
     process('Clan-tag')
-    label('Clan-tag')
+    label('Clan-tag', misc)
 
     local checkbox = ui.new_checkbox(t, l, 'Enable clan-tag')
     misc:add(checkbox)
@@ -924,9 +934,10 @@ end
 
 local autobuy do
     process('Auto-buy')
-    label('Auto-buy')
+    label('Auto-buy', misc)
 
     local checkbox = ui.new_checkbox(t, l, 'Enable auto-buy')
+    misc:add(checkbox)
 
     local sets = {
         Main = {
@@ -968,7 +979,7 @@ local autobuy do
     misc:add(pistol, function() return ui.get(checkbox) end)
     misc:add(misc_weap, function() return ui.get(checkbox) end)
 
-    local push = function()
+    local buybot_push = function()
         local buy_queue = {
             [main] = sets.Main,
             [pistol] = sets.Pistols,
@@ -994,16 +1005,142 @@ local autobuy do
         end
     end
 
+    local push = function(data)
+        assert('Spawn: '.. data.userid)
+        if client.userid_to_entindex(data.userid) ~= entity.get_local_player() then return false end
+
+        assert('Buybot')
+
+        client.delay_call(.5, buybot_push) -- Avoiding delay between "buy" command work
+    end
+
     ui.set_callback(checkbox, function()
         local _ = ui.get(checkbox)
 
-        client[(_ and 'set' or 'unset') .. '_event_callback']('round_freeze_end', push)
+        client[(_ and 'set' or 'unset') .. '_event_callback']('player_spawn', push)
     end)
 
     process_end('Auto-buy')
 end
 
 client.set_event_callback('shutdown', function() client.set_clan_tag('') end)
+
+--[[
+
+    VISUALS
+
+]]
+
+local visuals = tabs.new('Visuals')
+
+local watermark do
+    process('Watermark')
+    label('Watermark', visuals)
+    local checkbox = ui.new_checkbox(t, l, 'Watermark')
+    visuals:add(checkbox)
+
+    local content_data = {}
+
+    local content = {
+        Ping = function(x, y, w, h)
+            local str = client.latency() .. tweaks.colors.gray .. 'FF ms'
+
+            local tW, tH = renderer.measure_text('', str)
+
+            local rW, rY = tW + 23, y + (h - 23) / 2 
+
+            content_data['ping'] = content_data['ping'] or {}
+            content_data.ping.w = Lerp(globals.frametime() * 10, content_data.ping.w, rW)
+
+            render.rectangle(x, rY, content_data.ping.w, 23, 34, 34, 34, 200, 4)
+            render.edge_v(x, rY, 23, 255)
+            renderer.text(x + rW / 2, rY + tH, 255, 255, 255, 255, 'c', content_data.ping.w, str)
+
+            return rW
+        end,
+        Time = function(x, y, w, h)
+            local hour, m, s, ms = client.system_time()
+
+            hour, m = string.format('%02d', hour), string.format('%02d', m)
+
+            local str = hour .. tweaks.colors.gray .. 'FF:' .. m
+
+            local tW, tH = renderer.measure_text('', str)
+
+            local rW, rY = tW + 23, y + (h - 23) / 2 
+
+            content_data['time'] = content_data['time'] or {}
+            content_data.time.w = Lerp(globals.frametime() * 10, content_data.time.w, rW)
+
+            render.rectangle(x, rY, content_data.time.w, 23, 34, 34, 34, 200, 4)
+            render.edge_v(x, rY, 23, 255)
+            renderer.text(x + rW / 2, rY + tH, 255, 255, 255, 255, 'c', content_data.time.w, str)
+
+            return rW
+        end,
+    }
+
+    local _content do _content = {} for i,v in pairs(content) do table.insert(_content, i) end end
+
+    local container = ui.new_multiselect(t, l, 'Content', unpack(_content))
+    visuals:add(container, function() return ui.get(checkbox) end)
+
+    local scrW, scrH = client.screen_size()
+
+    local w, h = 10, 29
+    local x, y = scrW - w - 30, h / 2
+
+    local start_w = w
+
+    local widget = widgets.new(x, y, w, h, 'watermark', {x = true, y = true}, nil, 4)
+    
+    local prev_w = widget.cord.w
+
+    local push = function()
+
+        local x, y, w, h = widget.cord_lerp.x, widget.cord_lerp.y, widget.cord_lerp.w, widget.cord_lerp.h
+
+        local content_ = ui.get(container)
+        --if #content_ <= 0 then assert('Container empty! Skip') return false end
+        
+        local new_w = start_w
+
+        for i,v in ipairs(content_) do
+            if type(content[v]) == 'function' then
+                local status, err = pcall(content[v], x + new_w - start_w / 2 + (2.5 * i), y, w, h) 
+                if not status then 
+                    assert(err) 
+                else
+                    new_w = new_w + err + 5
+                end
+            end
+        end
+
+        widget.cord.w = Lerp(globals.frametime() * 10, widget.cord.w, new_w)
+
+        if new_w == prev_w then return true end
+        prev_w = new_w
+        
+        local new_x = widget.cord_lerp.x - (new_w - widget.cord.w)
+
+        ui.set(widget.ui.x, new_x)
+    end
+    
+    local push = function() local status, err = pcall(push) if not status then assert(err) end end
+
+    widget.paint = false
+
+    ui.set_callback(checkbox, function()
+        local _ = ui.get(checkbox)
+
+        widget.paint = _
+
+        client[(_ and 'set' or 'unset') .. '_event_callback']('paint_ui', push)
+    end)
+
+    process_end('Watermark')
+end
+
 
 tweaks.print('Processed! '.. tweaks.colors.white ..'(' .. string.format('%.2f', client.timestamp() - tweaks.start) .. 's)')
 notifications.new(tweaks.colors.green ..'FF• '.. tweaks.colors.gray ..'FFProcessed! '.. tweaks.colors.white ..'FF' .. string.format('%.2f', client.timestamp() - tweaks.start) .. 's')
