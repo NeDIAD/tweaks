@@ -295,7 +295,7 @@ local widgets do
     widgets = {}
     widgets.__index = widgets
 
-    function widgets.new(x, y, w, h, id, draggable, paint_ui, corner)
+    function widgets.new(x, y, w, h, id, draggable, paint_ui, corner, shutdown)
         if not id then assert('No id!') id = table.count(paint_queue) end
         tostring(id)
 
@@ -313,6 +313,8 @@ local widgets do
 
         local sliderX, sliderY = ui.new_slider('MISC', 'Settings', id .. ':x' , 0, scrW, x), ui.new_slider('MISC', 'Settings', id .. ':y', 0, scrH, y)
         ui.set_visible(sliderX, false); ui.set_visible(sliderY, false)
+
+        self.shutdown = shutdown or function() end
 
         self.ui = {x = sliderX, y = sliderY}
         self.cord = {x = x, y = y, w = w, h = h}
@@ -402,8 +404,7 @@ local widgets do
 
     client.set_event_callback('shutdown', function()
         for i,v in pairs(paint_queue) do
-            --ui.set(v.ui.x, v.cord.x)
-            --ui.set(v.ui.y, v.cord.y)
+            v.shutdown()
         end
     end)
 
@@ -1033,7 +1034,7 @@ client.set_event_callback('shutdown', function() client.set_clan_tag('') end)
 
 local visuals = tabs.new('Visuals')
 
---[[local watermark do
+local watermark do
     process('Watermark')
     label('Watermark', visuals)
     local checkbox = ui.new_checkbox(t, l, 'Watermark')
@@ -1058,7 +1059,7 @@ local visuals = tabs.new('Visuals')
 
             return rW
         end,
-        Time = function(x, y, w, h)
+        Time = function(x, y, w, h, l)
             local hour, m, s, ms = client.system_time()
 
             hour, m = string.format('%02d', hour), string.format('%02d', m)
@@ -1092,9 +1093,9 @@ local visuals = tabs.new('Visuals')
 
     local start_w = w
 
-    local widget = widgets.new(x, y, w, h, 'watermark', {x = true, y = true}, nil, 4)
-    
-    local prev_w = widget.cord.w
+    local widget
+
+    local function compensate() return true end
 
     local push = function()
 
@@ -1107,26 +1108,31 @@ local visuals = tabs.new('Visuals')
 
         for i,v in ipairs(content_) do
             if type(content[v]) == 'function' then
-                local status, err = pcall(content[v], x + new_w - start_w / 2 + (2.5 * i), y, w, h) 
+                local status, err = pcall(content[v], x + new_w - start_w / 2 + 2.5 * i, y, w, h) 
+
                 if not status then 
                     assert(err) 
                 else
                     new_w = new_w + err + 5
                 end
             end
+
+            ::continue::
         end
 
+        widget.cord.x = Lerp(globals.frametime() * 10, widget.cord.x, widget.cord.x - (new_w - widget.cord.w))
         widget.cord.w = Lerp(globals.frametime() * 10, widget.cord.w, new_w)
 
-        if new_w == prev_w then return true end
-        prev_w = new_w
-        
-        local new_x = widget.cord_lerp.x - (new_w - widget.cord.w)
+        compensate = function()
+            ui.set(widget.ui.x, widget.cord.x + widget.cord.w - start_w + (0.625 / #content_) * #content_)
+        end
 
-        ui.set(widget.ui.x, new_x)
+        widget.shutdown = compensate
     end
     
     local push = function() local status, err = pcall(push) if not status then assert(err) end end
+
+    widget = widgets.new(x, y, w, h, 'tweaks-watermark', {x = true, y = true}, nil, 4, compensate)
 
     widget.paint = false
 
@@ -1139,7 +1145,7 @@ local visuals = tabs.new('Visuals')
     end)
 
     process_end('Watermark')
-end]]
+end
 
 
 tweaks.print('Processed! '.. tweaks.colors.white ..'(' .. string.format('%.2f', client.timestamp() - tweaks.start) .. 's)')
