@@ -188,7 +188,7 @@ tweaks.colors = {
 
 tweaks.settings = {
     prefix = '   ' .. tweaks.colors.base .. 'tweaks.lua \a'.. tweaks.colors.white ..'» ',
-    dev = false,
+    dev = true,
     version = 'alpha 0.2'
 }
 
@@ -226,6 +226,7 @@ local render do
     }
 
     function render.rectangle(x, y, w, h, r, g, b, a, radius)
+        x = type(x) == 'number' and x or 0; y = type(y) == 'number' and y or 0; w = type(w) == 'number' and w or 0; h = type(h) == 'number' and h or 0; r = r or 255 g = g or 255 b = b or 255 a = a or 255 radius = radius or 8
         x = math.floor(x); y = math.floor(y); w = math.floor(w); h = math.floor(h)
 
         if w < 20 then w = 20 end
@@ -256,6 +257,10 @@ local mouse do
     
     function mouse.held() return client.key_state(0x01) end
     function mouse.inbounds(x, y, w, h) 
+        if not x or not y or not w or not h then assert('Memory leak? Nil values defined!') end
+
+        x = x or 0 y = y or 0 w = w or 0 h = h or 0
+
         local endX, endY = x + w, y + h
         local mX, mY = ui.mouse_position()
 
@@ -331,6 +336,14 @@ local widgets do
 
         self.push = function()
             if not self.paint then return false end
+            
+            if not self then assert('Memory leak! Failed to define self!') return false end
+            if not self.cord then assert('Memory leak! Faield to define cord!') self.cord = {} return false end
+            if not self.cord.x or not self.cord.y or not self.cord.w or not self.cord.h then assert('Memory leak! Failed to define cord!') self.cord = {x = ui.get(sliderX), y = ui.get(sliderY), w = w, h = h} return false end
+            if not self.ui or not self.ui.x or not self.ui.y then assert('Memory leak! Failed to define ui!') self.ui = {x = sliderX, y = sliderY} end
+
+            if (lerp or 0) < .05 then return false end
+
             local statement = toggle or mouse.inbounds(self.cord.x, self.cord.y, self.cord.w, self.cord.h)
             
             extra_lerp = Lerp(globals.frametime() * 10, extra_lerp, statement and 0 or .6)
@@ -385,12 +398,11 @@ local widgets do
     end
 
     client.set_event_callback('paint_ui', function()
-        --if fps < 25 then assert('Low framerate! Render cancelled!') return false end
+        --if fps < 25 then assert('Low framerate! Render cancelled to avoid memory leaks.') return false end
 
         lerp = lerp or 0
 
         lerp = Lerp(globals.frametime() * 10, lerp, ui.is_menu_open() and 1 or 0)
-        if (lerp or 0) < .05 then return false end
 
         for i,v in pairs(paint_queue) do
             if type(v) ~= 'table' or not v.push then goto continue end
@@ -1099,6 +1111,8 @@ local watermark do
 
     local push = function()
 
+        if not widget or not widget.cord_lerp or not widget.cord_lerp.x or not widget.cord or not widget.cord.x then assert('Memory leak! Push cancelled to avoid errors!') return false end
+
         local x, y, w, h = widget.cord_lerp.x, widget.cord_lerp.y, widget.cord_lerp.w, widget.cord_lerp.h
 
         local content_ = ui.get(container)
@@ -1124,7 +1138,7 @@ local watermark do
         widget.cord.w = Lerp(globals.frametime() * 10, widget.cord.w, new_w)
 
         compensate = function()
-            ui.set(widget.ui.x, widget.cord.x + widget.cord.w - start_w + (0.625 / #content_) * #content_)
+            ui.set(widget.ui.x, widget.cord.x + widget.cord.w - start_w + (0.625 * (#content_ > 0 and 1 or 0)))
         end
 
         widget.shutdown = compensate
@@ -1137,6 +1151,7 @@ local watermark do
     widget.paint = false
 
     ui.set_callback(checkbox, function()
+        --if fps < 25 then assert('Low framerate! Render cancelled to avoid memory leaks.') return false end
         local _ = ui.get(checkbox)
 
         widget.paint = _
