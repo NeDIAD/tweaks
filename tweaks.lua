@@ -1033,7 +1033,7 @@ client.set_event_callback('shutdown', function() client.set_clan_tag('') end)
 
 local visuals = tabs.new('Visuals')
 
-local watermark do
+--[[local watermark do
     process('Watermark')
     label('Watermark', visuals)
     local checkbox = ui.new_checkbox(t, l, 'Watermark')
@@ -1139,7 +1139,7 @@ local watermark do
     end)
 
     process_end('Watermark')
-end
+end]]
 
 
 tweaks.print('Processed! '.. tweaks.colors.white ..'(' .. string.format('%.2f', client.timestamp() - tweaks.start) .. 's)')
