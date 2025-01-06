@@ -188,7 +188,7 @@ tweaks.colors = {
 
 tweaks.settings = {
     prefix = '   ' .. tweaks.colors.base .. 'tweaks.lua \a'.. tweaks.colors.white ..'» ',
-    dev = true,
+    dev = false,
     version = 'alpha 0.2'
 }
 
