@@ -335,12 +335,12 @@ local widgets do
         local rX, rY = x, y
 
         self.push = function()
-            if not self.paint then return false end
             
             if not self then assert('Memory leak! Failed to define self!') return false end
             if not self.cord then assert('Memory leak! Faield to define cord!') self.cord = {} return false end
             if not self.cord.x or not self.cord.y or not self.cord.w or not self.cord.h then assert('Memory leak! Failed to define cord!') self.cord = {x = ui.get(sliderX), y = ui.get(sliderY), w = w, h = h} return false end
             if not self.ui or not self.ui.x or not self.ui.y then assert('Memory leak! Failed to define ui!') self.ui = {x = sliderX, y = sliderY} end
+            if not self.paint and self.cord_lerp.x + 5 >= (scrW + self.cord.w) then return false end
 
             if (lerp or 0) < .05 then return false end
 
@@ -349,7 +349,7 @@ local widgets do
             extra_lerp = Lerp(globals.frametime() * 10, extra_lerp, statement and 0 or .6)
             if not draggable.x and self.cord.x ~= rX then assert('X Coord!') self.cord.x = rX end
             if not draggable.y and self.cord.y ~= rY then assert('Y Coord!') self.cord.y = rY end
-            self.cord_lerp.x = Lerp(globals.frametime() * 10, x, self.cord.x)
+            self.cord_lerp.x = Lerp(globals.frametime() * 10, x, (self.paint and self.cord.x or scrW + self.cord.w))
             self.cord_lerp.y = Lerp(globals.frametime() * 10, y, self.cord.y)
 
             x = self.cord_lerp.x
@@ -1056,7 +1056,7 @@ local watermark do
 
     local content = {
         Ping = function(x, y, w, h)
-            local str = client.latency() .. tweaks.colors.gray .. 'FF ms'
+            local str = math.floor(client.latency() * 1000) .. tweaks.colors.gray .. 'FF ms'
 
             local tW, tH = renderer.measure_text('', str)
 
@@ -1065,8 +1065,9 @@ local watermark do
             content_data['ping'] = content_data['ping'] or {}
             content_data.ping.w = Lerp(globals.frametime() * 10, content_data.ping.w, rW)
 
-            render.rectangle(x, rY, content_data.ping.w, 23, 34, 34, 34, 200, 4)
-            render.edge_v(x, rY, 23, 255)
+            render.rectangle(x, rY, content_data.ping.w, 23, 34, 34, 34, 100, 4)
+            --render.edge_v(x, rY, 23, 255)
+            if globals.mapname() then renderer.blur(x, rY, content_data.ping.w, 23) end
             renderer.text(x + rW / 2, rY + tH, 255, 255, 255, 255, 'c', content_data.ping.w, str)
 
             return rW
@@ -1085,16 +1086,19 @@ local watermark do
             content_data['time'] = content_data['time'] or {}
             content_data.time.w = Lerp(globals.frametime() * 10, content_data.time.w, rW)
 
-            render.rectangle(x, rY, content_data.time.w, 23, 34, 34, 34, 200, 4)
-            render.edge_v(x, rY, 23, 255)
+            render.rectangle(x, rY, content_data.time.w, 23, 34, 34, 34, 100, 4)
+            --render.edge_v(x, rY, 23, 255)
+            if globals.mapname() then renderer.blur(x, rY, content_data.ping.w, 23) end
             renderer.text(x + rW / 2, rY + tH, 255, 255, 255, 255, 'c', content_data.time.w, str)
 
             return rW
         end,
     }
 
+    
     local _content do _content = {} for i,v in pairs(content) do table.insert(_content, i) end end
-
+    
+    
     local container = ui.new_multiselect(t, l, 'Content', unpack(_content))
     visuals:add(container, function() return ui.get(checkbox) end)
 
@@ -1156,8 +1160,10 @@ local watermark do
 
         widget.paint = _
 
-        client[(_ and 'set' or 'unset') .. '_event_callback']('paint_ui', push)
+        --client[(_ and 'set' or 'unset') .. '_event_callback']('paint_ui', push)
     end)
+
+    client.set_event_callback('paint_ui', push)
 
     process_end('Watermark')
 end
