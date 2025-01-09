@@ -29,6 +29,20 @@ tweaks.presets = {
             kill = {'Kill phrase 1, %s', 'Kill phrase 2, %s', 'Kill phrase 3, %s'},
             death = {'Death phrase 1, %s', 'Death phrase 2, %s', 'Death phrase 3, %s'},
         },
+        ['English Agressive'] = {
+            kill = {"U think u good? luckily im here #SKEET","youre value compared to me  is but a grain of sand","all romanian(you) will die to me(gypys king)","this isnt phasmaphobia: global offensive please dont speak","SKEET trap house","I guarntee youre loss forever and always","𝕡𝕣𝕠𝕓𝕝𝕖𝕞?","cope"," 格拉格拉 < you? 无功无过 < me B) #SKEET","in hvh war i will win","below average performance SKEET performance","SPEAK BULGARIAN? WILL TALK CN","you are loss it is decided with my SKEET.lua","you do not perform this hvh against SKEET","qahahaha i am top of this region","this weak snail is spoke of victory but is door unhinged to loss","you do not have the impression of owning the performance-enhancing software known as Gamesense.pub","how you will feel knowing im skeethaving and u will skeetless #SKEET","your mexican familia never make it out from trailer #SKEET","cant understand u. any noname translator? #SKEET","you waste aka fecal matter/shit(you)","sorry for u loss, me always better like life","better luck next round, oh wait i alr won BAHAHHA","ur lua & u sucks get SKEET >.<","when you spawn tell me why u die to me","how hit chance in deagle? i sit.", "shitting on your cheat speedrun any% WR run feat SKEET","smelly lapdog dreams of success in 1x1 but is handed 9 casualities","dude where are my diamonds?","all weak dogs fall to SKEET","WOW SKEET .。GYPSY 的科技 (TECHNOLOGY) ? "},
+                -- starlight killsay's
+            death = false
+        },
+        ['Russian Agressive'] = {
+            kill = {"нюхай пятку сын шаболды ёбаной","сосешь хуже мегионских цыпочек","омг nice small pisunchik","ты нихуя не ледженд","OWNED, сын шлюхи ёбаной","позволь моей писечке исследовать недры шахты твоей матери","целуй писичку fucking no legend","твоя писичка такая же маленькая как и iqshe4ka","в следущей раз выйграешь ледженда","Are you legend? Пройдите проверку на писечку для уточнения вопроса - clocked#5537 virtual#0085","ВЫ ТАКОЙ ЖЕ ТАНЦОР КАК ЛЯСТИЧКИ NOLEGENDICKI","Твоя мать такая же жирная как idle nolegend (140)","накончал на твою лысинку она как у батька шамелисика","твоя мамаша приготовила мне вкусные бутербродики как у gachi nolegend","ты очень хорошо лижешь пяточки научи клокедика legendicka","шлюха ебаная так же сдохла как бабка фиппа и маута","сын шлюхи у тебя такие же компьютерики как у vanino nolegend","твоя мамаша лижет мороженное ой блять это же моя писечка","у твоей матери такая же узкая пизда как глаза d4ssh legend","ты такой же ебаный пес как  l4fn nolegend","мда играешь ты конечно хуево не то что virtual legendick","разбомбил тебе ебасосину как бомбят walper nolegend","ты никогда не будешь legend с такой small pise4ka","пока ты сосешь хуй мы чилим на острове legendickov","шлюха ебаная так же сдохла как бабка фиппа и маута","хочешь купить config by legendick? ПОШЕЛ НАХУЙ СЫН ШЛЮХИ ЁБАНОЙ","ЭХХХ КАК ЖЕ АХУЕННО СОСЕТ ТВОЯ МАМАША МОЙ PISUN4IK","e1","рандерандерандеву твоя мать шлюха сосала наяву","пузо твоей матери шлюхи такое же большое как у shirazu nolegend","АХАХХАА БЛЯ ЧЕЛ ТЫ ИГРАЕШЬ ХУЖЕ HOLATV","NEW META FUCKING NO LEGEND?","ебать я тя ебнул как бабку маута","СОСИ ХУЙ ПЛАКСА ЁБАНАЯ","ИЗВИНЯЙСЯ СЫН ШЛЮХИ ЁБАНОЙ","шлюха ебаная так же сдохла как бабка фиппа и маута","ВЫЕБАНА В ПОПЭПНЦИЮ FUCKING NO LEGEND","ЁБАНЫЙ СЫН ШЛЮХИ ТЫ ХОЧЕШЬ КАК ВИТМА И СТИВАХА МНЕ ПРОЕАТЬ","сын шлюхи ты думал моя писечка сравнится с твоей?","если хочешь я могу тебя на стриме обоссать","ТЫ НЕ ЗНАЕШЬ ЛЕДЖЕНДОВ? ЁБАНЫЙ СЫН ШЛЮХИ С 2023 ЛИВНИ","ты так же зафейлишь проверку на писечки как mishat nolegend","ты танцуешь с бутылкой как ебаный clocked legend?","1","нахуй ты от меня убегаешь как батек virtual legend","ебать я тя ебнул как бабку маута","если хочешь можешь прикупить айфончик 5 s как у merlex nolegend","если хочешь научиться играть тебе нужно попасть в стак legend pise4ki","твоя мать такая же ебаная инвалидка как fiks nolegend","че пидорас цапнул в писечку?","ебать я тя ебнул как бабку маута","ты сдох раньше своей матери шлюхи ой или она уже сдохла ?","твоя мамка любит большие леджендские ололо","ёбаный ноу ледженд ты кого пытался убить?","ой братан походу тебе нужно купить кфгешку леджендика","жду реванша сын ебаной шлюхи","ебать я тя ебнул как бабку маута","переиграна 12 летка ебучая ","знаешь чем пахнут мои яички? спроси у своей мамаши шлюхи ёбаной ", "может сначала купишь пкешочки как у леджендиков? ", "че то ты мои грязные яички облизал сын ёбаной пизды"},
+                -- bluhgang killsay's
+            death = false
+        },
+        ['Just One'] = {
+            kill = {'1', '①', '❶', '111', '.•°*”˜˜”*°• 1 •°*”˜˜”*°•', '.•°*”˜˜”*°•♥●•٠ 1 ٠•●♥°*”˜˜”*°•', '☀*”˜ 1 ˜”*☀'}, 
+            death = false
+        },
         --[[
         
             %s = Nickname who killed / who was killed
@@ -39,7 +53,6 @@ tweaks.presets = {
         Tweaks = {
             '>> tweaks.lua', '<<', '',
         },
-
         --[[
 
             '>> 123' = '1', '12', '123'
@@ -60,12 +73,14 @@ tweaks.presets = {
 }
 
 local ffi = require('ffi')
---local http = require('gamesense/http')
+local http = require('gamesense/http')
 
 table.clear = require('table.clear')
 table.find = function(a, b) for i,v in ipairs(a) do if v == b then return i end end end
 table.count = function(a) local r = 0 for i, v in ipairs(a) do r = r + 1 end for i, v in pairs(a) do r = r + 1 end return r end
 math.clamp = function(a, b, c) return math.max(b, math.min(c, a)) end
+
+local bow = readfile('tweaks_bow.png')
 
 --[[
 
@@ -212,6 +227,21 @@ tweaks.start = client.timestamp()
 tweaks.print('Init version: ' .. tweaks.colors.white .. tweaks.settings.version)
 
 if tweaks.settings.dev then tweaks.print('Loaded in ' .. tweaks.colors.white .. 'dev-mode' .. tweaks.colors.gray ..'!') end
+
+if not bow then
+    http.get('https://github.com/NeDIAD/tweaks/blob/c202a524514031a552a2a795809f48f136d6c837/bow.png?raw=true', function(success, raw)
+        if success then
+            writefile('tweaks_bow.png', raw.body)
+            bow = renderer.load_png(raw.body, 24, 24)
+            tweaks.print('Downloaded \"tweaks_bow.png\", ' .. tostring(bow))
+        else
+            tweaks.print('Failed to \"tweaks_bow.png\"')
+        end
+    end)
+else
+    bow = renderer.load_png(bow, 24, 24)
+    tweaks.print('Loaded \"tweaks_bow.png\", ' .. tostring(bow))
+end
 
 local render do
     process('Render library')
@@ -705,10 +735,20 @@ local trashtalk do
     local function get_phrase(tbl)
         local _preset = tweaks.presets.trashtalk[ui.get(preset)]
 
-        if not _preset[tbl] then assert('Phrase: Failed to find ' .. tsotring(tbl) .. ' in preset!') return '?' end
-        if #_preset[tbl] <= 1 then assert('Phrase: Preset must have more than 1 phrase! ' .. tostring(tbl)) return _preset[tbl][1] end
+        local result = ''
 
-        return _preset[tbl][client.random_int(1, #_preset[tbl])]
+        if not _preset[tbl] then assert('Phrase: Failed to find ' .. tostring(tbl) .. ' in preset!') return false end
+        if type(_preset[tbl]) == 'string' then _preset[tbl] = {_preset[tbl]} end
+        if type(_preset[tbl]) ~= 'table' then return false end
+        if #_preset[tbl] <= 1 then assert('Phrase: Preset must have more than 1 phrase! ' .. tostring(tbl)) result = _preset[tbl][1] else result = _preset[tbl][client.random_int(1, #_preset[tbl])] end
+
+        local function proc(phrase)
+            if type(phrase) == 'function' then phrase = phrase() end
+            
+            return phrase
+        end
+
+        return proc(result) 
     end
 
     local push = function(data)
@@ -723,11 +763,17 @@ local trashtalk do
         if entity.is_enemy(victim) and attacker == entity.get_local_player() and contain(events, 'Kill') then
             assert('Info: Trash talk (kill)')
 
-            client.exec('say ' .. string.format(get_phrase('kill'), entity.get_player_name(victim)))
+            local phrase = get_phrase('kill')
+            if not phrase then return false end
+
+            client.exec('say ' .. string.format(phrase, entity.get_player_name(victim)))
         elseif entity.is_enemy(attacker) and victim == entity.get_local_player() and contain(events, 'Death') then
             assert('Info: Trash talk (death)')
 
-            client.exec('say ' .. string.format(get_phrase('death'), entity.get_player_name(attacker)))
+            local phrase = get_phrase('death')
+            if not phrase then return false end
+
+            client.exec('say ' .. string.format(phase, entity.get_player_name(attacker)))
         elseif tweaks.settings.dev then
             tweaks.print('Info: skip')
         end
@@ -1055,6 +1101,11 @@ local watermark do
     local content_data = {}
 
     local content = {
+        Bow = function(x, y, w, h)
+            render.rectangle(x, y + (h - 26) / 2, 26, 26, 34, 34, 34, 255, 4)
+            renderer.texture(bow, x + 3, y + (h - 20) / 2, 20, 20, 255, 255, 255, 255, 'f')
+            return 26
+        end,
         Ping = function(x, y, w, h)
             local str = math.floor(client.latency() * 1000) .. tweaks.colors.gray .. 'FF ms'
 
@@ -1065,9 +1116,8 @@ local watermark do
             content_data['ping'] = content_data['ping'] or {}
             content_data.ping.w = Lerp(globals.frametime() * 10, content_data.ping.w, rW)
 
-            render.rectangle(x, rY, content_data.ping.w, 23, 34, 34, 34, 100, 4)
+            render.rectangle(x, rY, content_data.ping.w, 23, 34, 34, 34, 200, 4)
             --render.edge_v(x, rY, 23, 255)
-            if globals.mapname() then renderer.blur(x, rY, content_data.ping.w, 23) end
             renderer.text(x + rW / 2, rY + tH, 255, 255, 255, 255, 'c', content_data.ping.w, str)
 
             return rW
@@ -1086,19 +1136,19 @@ local watermark do
             content_data['time'] = content_data['time'] or {}
             content_data.time.w = Lerp(globals.frametime() * 10, content_data.time.w, rW)
 
-            render.rectangle(x, rY, content_data.time.w, 23, 34, 34, 34, 100, 4)
-            --render.edge_v(x, rY, 23, 255)
-            if globals.mapname() then renderer.blur(x, rY, content_data.ping.w, 23) end
+            render.rectangle(x, rY, content_data.time.w, 23, 34, 34, 34, 200, 4)
+            --render.edge_v(x, rY, 23, 255)            
             renderer.text(x + rW / 2, rY + tH, 255, 255, 255, 255, 'c', content_data.time.w, str)
 
             return rW
         end,
     }
-
     
     local _content do _content = {} for i,v in pairs(content) do table.insert(_content, i) end end
     
-    
+    table.remove(_content, table.find(_content, 'Bow'))
+    table.insert(_content, 1, 'Bow')
+
     local container = ui.new_multiselect(t, l, 'Content', unpack(_content))
     visuals:add(container, function() return ui.get(checkbox) end)
 
@@ -1114,7 +1164,6 @@ local watermark do
     local function compensate() return true end
 
     local push = function()
-
         if not widget or not widget.cord_lerp or not widget.cord_lerp.x or not widget.cord or not widget.cord.x then assert('Memory leak! Push cancelled to avoid errors!') return false end
 
         local x, y, w, h = widget.cord_lerp.x, widget.cord_lerp.y, widget.cord_lerp.w, widget.cord_lerp.h
@@ -1167,7 +1216,6 @@ local watermark do
 
     process_end('Watermark')
 end
-
 
 tweaks.print('Processed! '.. tweaks.colors.white ..'(' .. string.format('%.2f', client.timestamp() - tweaks.start) .. 's)')
 notifications.new(tweaks.colors.green ..'FF• '.. tweaks.colors.gray ..'FFProcessed! '.. tweaks.colors.white ..'FF' .. string.format('%.2f', client.timestamp() - tweaks.start) .. 's')
