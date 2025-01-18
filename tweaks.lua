@@ -8,118 +8,93 @@
 
 tweaks = tweaks or {}
 
-local fps = 0
-local frameTime = 0
-
-client.set_event_callback('paint_ui', function()
-    frameTime = globals.absoluteframetime()
-
-    if frameTime > 0 then
-        fps = 1 / frameTime
-    else
-        fps = 0
-    end
-end)
-
-local hg = {'generic', 'head', 'chest', 'stomach', 'left arm', 'right arm', 'left leg', 'right leg', 'neck', '?', 'gear'}
 
 tweaks.presets = {
     trashtalk = {
         Tweaks = {
-            kill = {'Kill phrase 1, %s', 'Kill phrase 2, %s', 'Kill phrase 3, %s'},
-            death = {'Death phrase 1, %s', 'Death phrase 2, %s', 'Death phrase 3, %s'},
+            Kill = {'Kill phrase 1, %s', 'Kill phrase 2, %s', 'Kill phrase 3, %s'},
+            Death = {'Death phrase 1, %s', 'Death phrase 2, %s', 'Death phrase 3, %s'},
         },
         ['English Agressive'] = {
-            kill = {"U think u good? luckily im here #SKEET","youre value compared to me  is but a grain of sand","all romanian(you) will die to me(gypys king)","this isnt phasmaphobia: global offensive please dont speak","SKEET trap house","I guarntee youre loss forever and always","𝕡𝕣𝕠𝕓𝕝𝕖𝕞?","cope"," 格拉格拉 < you? 无功无过 < me B) #SKEET","in hvh war i will win","below average performance SKEET performance","SPEAK BULGARIAN? WILL TALK CN","you are loss it is decided with my SKEET.lua","you do not perform this hvh against SKEET","qahahaha i am top of this region","this weak snail is spoke of victory but is door unhinged to loss","you do not have the impression of owning the performance-enhancing software known as Gamesense.pub","how you will feel knowing im skeethaving and u will skeetless #SKEET","your mexican familia never make it out from trailer #SKEET","cant understand u. any noname translator? #SKEET","you waste aka fecal matter/shit(you)","sorry for u loss, me always better like life","better luck next round, oh wait i alr won BAHAHHA","ur lua & u sucks get SKEET >.<","when you spawn tell me why u die to me","how hit chance in deagle? i sit.", "shitting on your cheat speedrun any% WR run feat SKEET","smelly lapdog dreams of success in 1x1 but is handed 9 casualities","dude where are my diamonds?","all weak dogs fall to SKEET","WOW SKEET .。GYPSY 的科技 (TECHNOLOGY) ? "},
+            Kill = {"U think u good? luckily im here #SKEET","youre value compared to me  is but a grain of sand","all romanian(you) will die to me(gypys king)","this isnt phasmaphobia: global offensive please dont speak","SKEET trap house","I guarntee youre loss forever and always","𝕡𝕣𝕠𝕓𝕝𝕖𝕞?","cope"," 格拉格拉 < you? 无功无过 < me B) #SKEET","in hvh war i will win","below average performance SKEET performance","SPEAK BULGARIAN? WILL TALK CN","you are loss it is decided with my SKEET.lua","you do not perform this hvh against SKEET","qahahaha i am top of this region","this weak snail is spoke of victory but is door unhinged to loss","you do not have the impression of owning the performance-enhancing software known as Gamesense.pub","how you will feel knowing im skeethaving and u will skeetless #SKEET","your mexican familia never make it out from trailer #SKEET","cant understand u. any noname translator? #SKEET","you waste aka fecal matter/shit(you)","sorry for u loss, me always better like life","better luck next round, oh wait i alr won BAHAHHA","ur lua & u sucks get SKEET >.<","when you spawn tell me why u die to me","how hit chance in deagle? i sit.", "shitting on your cheat speedrun any% WR run feat SKEET","smelly lapdog dreams of success in 1x1 but is handed 9 casualities","dude where are my diamonds?","all weak dogs fall to SKEET","WOW SKEET .。GYPSY 的科技 (TECHNOLOGY) ? "},
                 -- starlight killsay's
-            death = false
+            Death = false
         },
         ['Russian Agressive'] = {
-            kill = {"нюхай пятку сын шаболды ёбаной","сосешь хуже мегионских цыпочек","омг nice small pisunchik","ты нихуя не ледженд","OWNED, сын шлюхи ёбаной","позволь моей писечке исследовать недры шахты твоей матери","целуй писичку fucking no legend","твоя писичка такая же маленькая как и iqshe4ka","в следущей раз выйграешь ледженда","Are you legend? Пройдите проверку на писечку для уточнения вопроса - clocked#5537 virtual#0085","ВЫ ТАКОЙ ЖЕ ТАНЦОР КАК ЛЯСТИЧКИ NOLEGENDICKI","Твоя мать такая же жирная как idle nolegend (140)","накончал на твою лысинку она как у батька шамелисика","твоя мамаша приготовила мне вкусные бутербродики как у gachi nolegend","ты очень хорошо лижешь пяточки научи клокедика legendicka","шлюха ебаная так же сдохла как бабка фиппа и маута","сын шлюхи у тебя такие же компьютерики как у vanino nolegend","твоя мамаша лижет мороженное ой блять это же моя писечка","у твоей матери такая же узкая пизда как глаза d4ssh legend","ты такой же ебаный пес как  l4fn nolegend","мда играешь ты конечно хуево не то что virtual legendick","разбомбил тебе ебасосину как бомбят walper nolegend","ты никогда не будешь legend с такой small pise4ka","пока ты сосешь хуй мы чилим на острове legendickov","шлюха ебаная так же сдохла как бабка фиппа и маута","хочешь купить config by legendick? ПОШЕЛ НАХУЙ СЫН ШЛЮХИ ЁБАНОЙ","ЭХХХ КАК ЖЕ АХУЕННО СОСЕТ ТВОЯ МАМАША МОЙ PISUN4IK","e1","рандерандерандеву твоя мать шлюха сосала наяву","пузо твоей матери шлюхи такое же большое как у shirazu nolegend","АХАХХАА БЛЯ ЧЕЛ ТЫ ИГРАЕШЬ ХУЖЕ HOLATV","NEW META FUCKING NO LEGEND?","ебать я тя ебнул как бабку маута","СОСИ ХУЙ ПЛАКСА ЁБАНАЯ","ИЗВИНЯЙСЯ СЫН ШЛЮХИ ЁБАНОЙ","шлюха ебаная так же сдохла как бабка фиппа и маута","ВЫЕБАНА В ПОПЭПНЦИЮ FUCKING NO LEGEND","ЁБАНЫЙ СЫН ШЛЮХИ ТЫ ХОЧЕШЬ КАК ВИТМА И СТИВАХА МНЕ ПРОЕАТЬ","сын шлюхи ты думал моя писечка сравнится с твоей?","если хочешь я могу тебя на стриме обоссать","ТЫ НЕ ЗНАЕШЬ ЛЕДЖЕНДОВ? ЁБАНЫЙ СЫН ШЛЮХИ С 2023 ЛИВНИ","ты так же зафейлишь проверку на писечки как mishat nolegend","ты танцуешь с бутылкой как ебаный clocked legend?","1","нахуй ты от меня убегаешь как батек virtual legend","ебать я тя ебнул как бабку маута","если хочешь можешь прикупить айфончик 5 s как у merlex nolegend","если хочешь научиться играть тебе нужно попасть в стак legend pise4ki","твоя мать такая же ебаная инвалидка как fiks nolegend","че пидорас цапнул в писечку?","ебать я тя ебнул как бабку маута","ты сдох раньше своей матери шлюхи ой или она уже сдохла ?","твоя мамка любит большие леджендские ололо","ёбаный ноу ледженд ты кого пытался убить?","ой братан походу тебе нужно купить кфгешку леджендика","жду реванша сын ебаной шлюхи","ебать я тя ебнул как бабку маута","переиграна 12 летка ебучая ","знаешь чем пахнут мои яички? спроси у своей мамаши шлюхи ёбаной ", "может сначала купишь пкешочки как у леджендиков? ", "че то ты мои грязные яички облизал сын ёбаной пизды"},
+            Kill = {"нюхай пятку сын шаболды ёбаной","сосешь хуже мегионских цыпочек","омг nice small pisunchik","ты нихуя не ледженд","OWNED, сын шлюхи ёбаной","позволь моей писечке исследовать недры шахты твоей матери","целуй писичку fucking no legend","твоя писичка такая же маленькая как и iqshe4ka","в следущей раз выйграешь ледженда","Are you legend? Пройдите проверку на писечку для уточнения вопроса - clocked#5537 virtual#0085","ВЫ ТАКОЙ ЖЕ ТАНЦОР КАК ЛЯСТИЧКИ NOLEGENDICKI","Твоя мать такая же жирная как idle nolegend (140)","накончал на твою лысинку она как у батька шамелисика","твоя мамаша приготовила мне вкусные бутербродики как у gachi nolegend","ты очень хорошо лижешь пяточки научи клокедика legendicka","шлюха ебаная так же сдохла как бабка фиппа и маута","сын шлюхи у тебя такие же компьютерики как у vanino nolegend","твоя мамаша лижет мороженное ой блять это же моя писечка","у твоей матери такая же узкая пизда как глаза d4ssh legend","ты такой же ебаный пес как  l4fn nolegend","мда играешь ты конечно хуево не то что virtual legendick","разбомбил тебе ебасосину как бомбят walper nolegend","ты никогда не будешь legend с такой small pise4ka","пока ты сосешь хуй мы чилим на острове legendickov","шлюха ебаная так же сдохла как бабка фиппа и маута","хочешь купить config by legendick? ПОШЕЛ НАХУЙ СЫН ШЛЮХИ ЁБАНОЙ","ЭХХХ КАК ЖЕ АХУЕННО СОСЕТ ТВОЯ МАМАША МОЙ PISUN4IK","e1","рандерандерандеву твоя мать шлюха сосала наяву","пузо твоей матери шлюхи такое же большое как у shirazu nolegend","АХАХХАА БЛЯ ЧЕЛ ТЫ ИГРАЕШЬ ХУЖЕ HOLATV","NEW META FUCKING NO LEGEND?","ебать я тя ебнул как бабку маута","СОСИ ХУЙ ПЛАКСА ЁБАНАЯ","ИЗВИНЯЙСЯ СЫН ШЛЮХИ ЁБАНОЙ","шлюха ебаная так же сдохла как бабка фиппа и маута","ВЫЕБАНА В ПОПЭПНЦИЮ FUCKING NO LEGEND","ЁБАНЫЙ СЫН ШЛЮХИ ТЫ ХОЧЕШЬ КАК ВИТМА И СТИВАХА МНЕ ПРОЕАТЬ","сын шлюхи ты думал моя писечка сравнится с твоей?","если хочешь я могу тебя на стриме обоссать","ТЫ НЕ ЗНАЕШЬ ЛЕДЖЕНДОВ? ЁБАНЫЙ СЫН ШЛЮХИ С 2023 ЛИВНИ","ты так же зафейлишь проверку на писечки как mishat nolegend","ты танцуешь с бутылкой как ебаный clocked legend?","1","нахуй ты от меня убегаешь как батек virtual legend","ебать я тя ебнул как бабку маута","если хочешь можешь прикупить айфончик 5 s как у merlex nolegend","если хочешь научиться играть тебе нужно попасть в стак legend pise4ki","твоя мать такая же ебаная инвалидка как fiks nolegend","че пидорас цапнул в писечку?","ебать я тя ебнул как бабку маута","ты сдох раньше своей матери шлюхи ой или она уже сдохла ?","твоя мамка любит большие леджендские ололо","ёбаный ноу ледженд ты кого пытался убить?","ой братан походу тебе нужно купить кфгешку леджендика","жду реванша сын ебаной шлюхи","ебать я тя ебнул как бабку маута","переиграна 12 летка ебучая ","знаешь чем пахнут мои яички? спроси у своей мамаши шлюхи ёбаной ", "может сначала купишь пкешочки как у леджендиков? ", "че то ты мои грязные яички облизал сын ёбаной пизды"},
                 -- bluhgang killsay's
-            death = false
+            Death = false
         },
         ['Just One'] = {
-            kill = {'1', '①', '❶', '111', '.•°*”˜˜”*°• 1 •°*”˜˜”*°•', '.•°*”˜˜”*°•♥●•٠ 1 ٠•●♥°*”˜˜”*°•', '☀*”˜ 1 ˜”*☀'}, 
-            death = false
+            Kill = {'1', '①', '❶', '111', '.•°*”˜˜”*°• 1 •°*”˜˜”*°•', '.•°*”˜˜”*°•♥●•٠ 1 ٠•●♥°*”˜˜”*°•', '☀*”˜ 1 ˜”*☀'}, 
+            Death = false
         },
+        
         --[[
         
-            %s = Nickname who killed / who was killed
+            %s - Nickname who was killed / you
+
+            function(player) return entity.get_player_name(player) end -- PlayerName 
+            event = false -- Disable event
 
         ]]
     },
     clantag = {
         Tweaks = {
-            '>> tweaks.lua', '<<', '',
+            '>> tweaks.lua:_', 'tweaks.lua', 'tweaks.lua', '<<'
         },
+        ['nya :3'] = {
+            '>> nya :3:_', 'nya :3',  'nya :3', '<<' 
+        }
+        
         --[[
+        
+            Markup:
 
-            '>> 123' = '1', '12', '123'
-            '<<' = '123', '12', '1',
-            'string' = 'string' 
+            '@:' = ':' Escape
+
+            '>> clantag:animation': -- Animate text
+                Sample = '>> 123:_'
+                Result: '1_', '2_', '3_'
+
+                Another Sample = '>> 123'
+                Result: '1', '2', '3'
+
+            '<<': -- Reverse tag
+                Sample = {'1', '2', '<<', '4', '3', '<<'}
+                Result: '1', '2', '2', '1', '4', '3', '3', '4'
+
+            {...}: -- Table of tags
+                Sample = {{'1', '2', '3'}, {'3', '2', '1'}}
+                Result: '1', '2', '3', '3', '2', '1'
+
+            function(history) return history end: Function, first argument (table) = history of tags
+                Sample = {'1', '2', function(history) return history end}
+                Result: '1', '2', '1', '2'
+                    -- ^^ Explanation:
+                    Because function returns a table of tags, resolver will resolve every tag & add it to preset.
 
         ]]
-    },
-    hitsounds = {
-        -- csgo/sound/ ...
-        -- Disable skeet hs = ESP -> Player Esp -> Hitmarker sound,
-        -- Need to restart if you added new sound
-        -- Only .mp3 & .wav sounds
-
-        'hitsound/hitsound.mp3',
-        'resource/warning.wav',
     }
 }
 
+local hg = {'generic', 'head', 'chest', 'stomach', 'left arm', 'right arm', 'left leg', 'right leg', 'neck', '?', 'gear'}
+
+table.reverse = function(a) local b = {} for i, v in ipairs(a) do table.insert(b, 1, v) end return b end
+table.find = function(a, b) for i, v in ipairs(a) do if v == b then return i end end for i, v in pairs(a) do if v == b then return i end end return false end
+string.split = function(input, sep) if sep == nil then sep = '%s' end local t = {} for str in string.gmatch(input, "([^"..sep.."]+)") do table.insert(t, str) end return t end
+
+local function Lerp(d, h, t)
+    if not d or not h or not t then return 0 end
+
+	if d > 1 then return to end
+    if d < 0 then return from end
+    
+	return (h + ( t - h ) * d or 0) 
+end
+
 local ffi = require('ffi')
 local http = require('gamesense/http')
-
-table.clear = require('table.clear')
-table.find = function(a, b) for i,v in ipairs(a) do if v == b then return i end end end
-table.count = function(a) local r = 0 for i, v in ipairs(a) do r = r + 1 end for i, v in pairs(a) do r = r + 1 end return r end
-math.clamp = function(a, b, c) return math.max(b, math.min(c, a)) end
-
-local bow = readfile('tweaks_bow.png')
-
---[[
-
-    FFI
-
-    Hitsound by heydanlag
-
-]]
-
-local function vmt_entry(instance, index, type)
-	return ffi.cast(type, (ffi.cast('void***', instance)[0])[index])
-end
-
-local function vmt_bind(module, interface, index, typestring)
-	local instance = client.create_interface(module, interface) or error('invalid interface')
-	local success, typeof = pcall(ffi.typeof, typestring)
-	if not success then
-		error(typeof, 2)
-	end
-	local fnptr = vmt_entry(instance, index, typeof) or error('invalid vtable')
-	return function(...)
-		return fnptr(instance, ...)
-	end
-end
-
-local playsound = vmt_bind("vguimatsurface.dll", "VGUI_Surface031", 82, "void(__thiscall*)(void*, const char*)")
-
-local function normal_sound(name)
-	if name:find('_') then
-		name = name:gsub('_', ' ')
-	end
-	if name:find('.mp3') then
-		name = name:gsub('.mp3', '')
-	end
-	if name:find('.wav') then
-		name = name:gsub('.wav', '')
-	end
-	return name
-end
 
 local color do
     local hex_rgb = function (hex)
@@ -155,10 +130,10 @@ local color do
     end
 end
 
-local print_ do
+local printf do
 	local native_print = vtable_bind("vstdlib.dll", "VEngineCvar007", 25, "void(__cdecl*)(void*, const void*, const char*, ...)")
     
-	print_ = function (...)
+	printf = function (...)
 		for i, v in ipairs{...} do
 			local r = "\aD9D9D9" .. string.gsub(tostring(v), "[\r\v]", {["\r"] = "\aD9D9D9", ["\v"] = "\a".. (('\a74A6A9FF'):sub(1, 7))})
 			for col, text in r:gmatch("\a(%x%x%x%x%x%x)([^\a]*)") do
@@ -169,97 +144,74 @@ local print_ do
 	end
 end
 
-function table.Reverse(tbl)
-    local reverse = {}
-    for i, v in ipairs(tbl) do
-        table.insert(reverse, 1, v)
+local function rgb(r, g, b, a)
+    r = r or 255; g = g or 255; b = b or 255; a = a or 255;
+
+    if a == 255 then
+        return string.format('\a%02X%02X%02X', r, g, b)
+    else
+        return string.format('\a%02X%02X%02X%02X', r, g, b, a)
     end
-
-    return reverse
 end
 
-
-local function Lerp(d, h, t)
-    if not d or not h or not t then return 0 end
-
-	if d > 1 then return to end
-    if d < 0 then return from end
-    
-	return (h + ( t - h ) * d or 0) 
-end
-
-tweaks.settings = {}
 tweaks.colors = {
-    base = '\af5c242',
-    gray = '\aaaaaaa',
-    green = '\a34eb6b',
-    red = '\aeb344f',
-    purple = '\ab434eb',
-    white = '\affffff',
-    rgb = {
-        base = {r = 245, g = 194, b = 66}
+    base = rgb(164, 158, 229),
+    gray = rgb(221, 221, 221),
+    white = rgb(255, 255, 255),
+
+    red = rgb(243, 74, 74),
+    green = rgb(74, 243, 97),
+
+    render_color = {
+        base = {r = 128, g = 125, b = 165, a = 170}
     }
 }
 
 tweaks.settings = {
     prefix = '   ' .. tweaks.colors.base .. 'tweaks.lua \a'.. tweaks.colors.white ..'» ',
     dev = false,
-    version = 'alpha 0.2'
+    version = 'alpha 0.3'
 }
+
+client.exec('clear')
+
+printf(
+    tweaks.colors.base .. '    _____                  _          _\n',        
+    tweaks.colors.base .. '   |_   _|                | |        | |\n',      
+    tweaks.colors.base .. '     | |_      _____  __ _| | _____  | |_   _  __ _\n',
+    tweaks.colors.base .. '     | \\ \\ /\\ / / _ \\/ _` | |/ / __| | | | | |/ _` |\n',
+    tweaks.colors.base .. '     | |\\ V  V /  __/ (_| |   <\\__ \\_| | |_| | (_| |\n',
+    tweaks.colors.base .. '     \\_/ \\_/\\_/ \\___|\\__,_|_|\\_\\___(_)_|\\__,_|\\__,_|\n'
+)
 
 function tweaks.print(...) 
     local args = {...}
-    local send = {}
-    for i,v in ipairs(args) do
-        local txt = tostring(v)
-        table.insert(send, tweaks.colors.gray .. txt)
-    end
-    print_(tweaks.settings.prefix, unpack(send))
+    printf(tweaks.settings.prefix, unpack(args))
 end
 
 local function assert(str) if tweaks.settings.dev then tweaks.print(str) end end
 
-local function process(str) tweaks.print('Processing ' .. tweaks.colors.white .. str) end
-local function process_end(str) tweaks.print('Processed ' .. tweaks.colors.white .. str) end
+local function process(str) tweaks.print('Processing ' .. tweaks.colors.white .. str .. tweaks.colors.base ..' (' .. string.format('%.2f', client.timestamp() - tweaks.start) .. 's)') end
+local function process_end(str) tweaks.print('Processed ' .. tweaks.colors.white .. str .. tweaks.colors.base ..' (' .. string.format('%.2f', client.timestamp() - tweaks.start) .. 's)') end
 
 tweaks.print('Processing started ')
 tweaks.start = client.timestamp()
-tweaks.print('Init version: ' .. tweaks.colors.white .. tweaks.settings.version)
+tweaks.print('Init version: ' .. tweaks.colors.base .. tweaks.settings.version)
 
-if tweaks.settings.dev then tweaks.print('Loaded in ' .. tweaks.colors.white .. 'dev-mode' .. tweaks.colors.gray ..'!') end
+if tweaks.settings.dev then tweaks.print('Loaded in ' .. tweaks.colors.base .. 'dev-mode' .. tweaks.colors.gray ..'!') end
 
-if not bow then
-    http.get('https://github.com/NeDIAD/tweaks/blob/c202a524514031a552a2a795809f48f136d6c837/bow.png?raw=true', function(success, raw)
-        if success then
-            writefile('tweaks_bow.png', raw.body)
-            bow = renderer.load_png(raw.body, 24, 24)
-            tweaks.print('Downloaded \"tweaks_bow.png\", ' .. tostring(bow))
-        else
-            tweaks.print('Failed to \"tweaks_bow.png\"')
-        end
-    end)
-else
-    bow = renderer.load_png(bow, 24, 24)
-    tweaks.print('Loaded \"tweaks_bow.png\", ' .. tostring(bow))
-end
+printf('')
 
 local render do
     process('Render library')
     render = {}
-    render.textures = {
-        svg = {
-            edge = renderer.load_svg('<svg width="5.87" height="4" viewBox="0 0 6 4"><path fill="#fff" d="M2 0H0c0 2 2 4 4 4h2C4 4 2 2 2 0Z"/></svg>', 12, 8),
-        },
-        png = {
-            
-        },
-    }
 
     function render.rectangle(x, y, w, h, r, g, b, a, radius)
         x = type(x) == 'number' and x or 0; y = type(y) == 'number' and y or 0; w = type(w) == 'number' and w or 0; h = type(h) == 'number' and h or 0; r = r or 255 g = g or 255 b = b or 255 a = a or 255 radius = radius or 8
         x = math.floor(x); y = math.floor(y); w = math.floor(w); h = math.floor(h)
 
-        if w < 20 then w = 20 end
+        if h < 10 then h = 10 end
+        if w < 10 then w = 10 end
 
         renderer.rectangle(x + radius, y, w - 2 * radius, h, r, g, b, a)
         renderer.rectangle(x, y + radius, radius, h - 2 * radius, r, g, b, a)
@@ -269,12 +221,6 @@ local render do
         renderer.circle(x + radius, y + radius, r, g, b, a, radius, 180, 0.25) -- l t
         renderer.circle(x + w - radius, y + h - radius, r, g, b, a, radius, 0, 0.25) -- r b
         renderer.circle(x + w - radius, y + radius, r, g, b, a, radius, 90, 0.25) -- r t
-    end
-
-    function render.edge_v(x, y, length, alpha)
-        renderer.texture(render.textures.svg.edge, x, y + 4, 6, -4, tweaks.colors.rgb.base.r, tweaks.colors.rgb.base.g, tweaks.colors.rgb.base.b, alpha, "f")
-        renderer.rectangle(x, y + 4, 2, length - 8, tweaks.colors.rgb.base.r, tweaks.colors.rgb.base.g, tweaks.colors.rgb.base.b, alpha)
-        renderer.texture(render.textures.svg.edge, x, y + length - 4, 6, 4, tweaks.colors.rgb.base.r, tweaks.colors.rgb.base.g, tweaks.colors.rgb.base.b, alpha, "f")
     end
    
     process_end('Render library')
@@ -320,902 +266,696 @@ local mouse do
     process_end('Mouse library')
 end
 
-local widgets do
-    process('Widgets library')
+--[[ -- -- -- -- -- -- MAIN -- -- -- -- -- --  ]]--
 
-    local paint_queue = {}
-    local lerp = 0
-    local a = false
+local widgets do
+    process('Widgets')
 
     widgets = {}
     widgets.__index = widgets
+    widgets.widgets = {}
+    local scrW, scrH = client.screen_size()
 
-    function widgets.new(x, y, w, h, id, draggable, paint_ui, corner, shutdown)
-        if not id then assert('No id!') id = table.count(paint_queue) end
-        tostring(id)
+    local mouse_magnet = {
+        y = {35, scrH / 2, scrH - 35},
+        x = {scrW / 2}
+    }
 
-        x = type(x) == 'number' and x or 0
-        y = type(y) == 'number' and y or 0
-        w = type(w) == 'number' and w or 100
-        h = type(h) == 'number' and h or 100
-        corner = type(corner) == 'number' and corner or 8
-
-        draggable = type(draggable) == 'table' and draggable or {x = true, y = true}
+    
+    function widgets.new(id, push, x, y, w, h, draggable, tooltip, lock_size)
+        if not id or widgets.widgets[id] then return false end
+        push = type(push) == 'function' and push or function() end
+        x, y, w, h = type(x) == 'number' and x or 0, type(y) == 'number' and y or 0, type(w) == 'number' and w or 50, type(h) == 'number' and h or 50
+        
+        draggable = type(draggable) == 'table' and draggable or { x = true, y = true }
 
         local self = setmetatable({}, widgets)
-
-        local scrW, scrH = client.screen_size()
-
-        local sliderX, sliderY = ui.new_slider('MISC', 'Settings', id .. ':x' , 0, scrW, x), ui.new_slider('MISC', 'Settings', id .. ':y', 0, scrH, y)
-        ui.set_visible(sliderX, false); ui.set_visible(sliderY, false)
-
-        self.shutdown = shutdown or function() end
-
-        self.ui = {x = sliderX, y = sliderY}
-        self.cord = {x = x, y = y, w = w, h = h}
-        self.cord_lerp = {x = x, y = y, w = w, h = h}
+        
+        self.current = {x = x, y = y, w = w, h = h}
+        self.animate = {x = x, y = y, w = w, h = h}
         self.paint = true
 
-        ui.set_callback(sliderX, function() self.cord.x = ui.get(sliderX) end)
-        ui.set_callback(sliderY, function() self.cord.y = ui.get(sliderY) end)
-        local extra_lerp = .6
-        local toggle = false
-        local start = {}
-        
-        local rX, rY = x, y
+        local function line(x1, y1, x2, y2) renderer.line(x1, y1, x2, y2, 255, 255, 255, (self.line_alpha or 0)) end
+
+        local function slider(scale, init, align)
+
+            --[[
+                align:true = Y
+                align:false = X
+            ]]
+
+            local slide = ui.new_slider('CONFIG', 'Presets', id .. ':' .. scale, 0, (align and scrH or scrW), init)
+            if not tweaks.settings.dev then ui.set_visible(slide, false) end
+
+           return slide
+        end
+
+        self.ui = {
+            x = slider('x', x),
+            y = slider('y', y, true),
+        }
+
+        if not lock_size then
+            self.ui.w = slider('w', w)
+            self.ui.h = slider('h', h, true)
+        end
+
+        for scale, slider in pairs(self.ui) do
+            ui.set_callback(slider, function() self.current[scale] = ui.get(slider) end)
+        end
 
         self.push = function()
+
+            -- Handling data:
+
+            if type(self.current) ~= 'table' then assert('Rebuild: self.current') self.current = {x = x, y = y, w = w, h = h} end
+            if type(self.animate) ~= 'table' then assert('Rebuild: self.animate') self.animate = self.current end
+            if type(self.ui) ~= 'table' then assert('Memory leak! No UI elements') return false end
+
+            if type(self.alpha) ~= 'number' then self.alpha = 20 end
             
-            if not self then assert('Memory leak! Failed to define self!') return false end
-            if not self.cord then assert('Memory leak! Faield to define cord!') self.cord = {} return false end
-            if not self.cord.x or not self.cord.y or not self.cord.w or not self.cord.h then assert('Memory leak! Failed to define cord!') self.cord = {x = ui.get(sliderX), y = ui.get(sliderY), w = w, h = h} return false end
-            if not self.ui or not self.ui.x or not self.ui.y then assert('Memory leak! Failed to define ui!') self.ui = {x = sliderX, y = sliderY} end
-            if not self.paint and self.cord_lerp.x + 5 >= (scrW + self.cord.w) then return false end
-
-            if (lerp or 0) < .05 then return false end
-
-            local statement = toggle or mouse.inbounds(self.cord.x, self.cord.y, self.cord.w, self.cord.h)
+            -- --
             
-            extra_lerp = Lerp(globals.frametime() * 10, extra_lerp, statement and 0 or .6)
-            if not draggable.x and self.cord.x ~= rX then assert('X Coord!') self.cord.x = rX end
-            if not draggable.y and self.cord.y ~= rY then assert('Y Coord!') self.cord.y = rY end
-            self.cord_lerp.x = Lerp(globals.frametime() * 10, x, (self.paint and self.cord.x or scrW + self.cord.w))
-            self.cord_lerp.y = Lerp(globals.frametime() * 10, y, self.cord.y)
-
-            x = self.cord_lerp.x
-            y = self.cord_lerp.y
-
-            render.rectangle(x, y, self.cord.w, self.cord.h, 255, 255, 255, 100 * math.clamp((lerp - extra_lerp), 0, 1), corner)
-            --renderer.blur(self.cord.x, self.cord.y, self.cord.w, self.cord.h, math.clamp((lerp - extra_lerp), 0, 1), math.clamp((lerp - extra_lerp), 0, 1))
-
-            if mouse.held() and (statement) and (draggable.x or draggable.y) and (a == id or not a) then
-                if table.count(start) <= 0 or not start.x or not start.y or not start.mX or not start.mY then 
-                    local mX, mY = ui.mouse_position()
-
-                    start = {
-                        mX = mX,
-                        mY = mY,
-                        x = self.cord.x,
-                        y = self.cord.y,
-                    }
-                end
-                toggle = true
-                a = id
-
-                local nX, nY = mouse.calc(start.x, start.y, start.mX, start.mY, self.cord.w, self.cord.h)
-
-                if nX and nY then
-                    if draggable.x then ui.set(self.ui.x, nX) end
-                    if draggable.y then ui.set(self.ui.y, nY) end
-                end
-            else
-                if a == id then a = nil end
-                toggle = false
-                start = {}
+            -- Lerps:
+            
+            for scale, value in pairs(self.current) do
+                if self.animate[scale] == value then goto continue end
+                
+                self.animate[scale] = Lerp(globals.frametime() * 10, self.animate[scale], value)
+                
+                ::continue::
             end
+            
+            if not self.paint and self.alpha < 10 then return false end
+            
+            -- --
+            
+            -- Render:
+            
+            self.snap = ui.is_menu_open() and self.drag and not client.key_state(0x10) and tooltip
+            
+            if ui.is_menu_open() or not globals.mapname() then
+                
+                -- Handling mouse:
+                
+                local check = self.drag or mouse.inbounds(self.current.x, self.current.y, self.current.w, self.current.h)
+                self.alpha = Lerp(globals.frametime() * 10, self.alpha, (check and self.paint) and 70 or (self.paint and 20 or 0))
+                
+                if mouse.held() and check and (draggable.x or draggable.y) and (not widgets.drag_id or widgets.drag_id == id) then
+                    widgets.drag_id = id
+                    
+                    if not self.drag then 
+                        self.drag = {sX = self.current.x, sY = self.current.y} 
+                        self.drag.mX, self.drag.mY = ui.mouse_position()
+                    end
+                    local x, y = mouse.calc(self.drag.sX, self.drag.sY, self.drag.mX, self.drag.mY, self.current.w, self.current.h)
+                    
+                    local scales = {
+                        x = x,
+                        y = y
+                    }
+                    
+                    if self.snap then
+                        for scale, magnet in pairs(mouse_magnet) do
+                            if not draggable[scale] then goto continue end
+                            
+                            for i, value in ipairs(magnet) do
+                                if math.abs(scales[scale] - value) <= self.current[scale == 'x' and 'w' or 'h'] then
+                                    scales[scale] = value - self.current[scale == 'x' and 'w' or 'h'] / 2
+                                    if scales[scale] < 0 then scales[scale] = value end
+                                    if scales[scale] > (scale == 'x' and scrW - self.current.w or scrH - self.current.h) then scales[scale] = value - self.current[scale == 'x' and 'w' or 'h']  end
+                                end
+                            end
+                            
+                            ::continue::
+                        end
+                    end
+                    
+                    if draggable.x then ui.set(self.ui.x, scales.x) end
+                    if draggable.y then ui.set(self.ui.y, scales.y) end
+                else
+                    if widgets.drag_id == id then widgets.drag_id = nil end
+                    self.drag = nil
+                end
+                
+                -- --
+                
+            else
+                self.alpha = Lerp(globals.frametime() * 10, self.alpha, 0)
+            end
+            
+            if (self.alpha or 0) > 5 then
+                local c = self.animate
+                
+                render.rectangle(c.x, c.y, c.w, c.h, 255, 255, 255, self.alpha, 4)
+                
+                self.line_alpha = Lerp(globals.frametime() * 10, self.line_alpha, (self.drag and self.snap) and 200 or 0)
 
-            self.cord_lerp.w = w
-            self.cord_lerp.h = h
+                if (self.line_alpha or 0) > 5 and tooltip then
 
-            if paint_ui then paint_ui() end
+                    for scale, magnets in pairs(mouse_magnet) do
+                        if not draggable[scale] then goto continue end
+                        
+                        for i, value in ipairs(magnets) do
+                            local style = (scale == 'y' and {0, value, scrW, value} or {value, 0, value, scrH})
+                            
+                            line(unpack(style))
+                        end
+                        
+                        ::continue::
+                    end
+                    
+                    if draggable.x or draggable.y then 
+                        self.text_multi = Lerp(globals.frametime() * 10, self.line_alpha, (self.drag and self.snap) and scrW + scrH or 1)
+
+                        renderer.text(scrW / 2, scrH - 100, 255, 255, 255, 255, 'cb+', self.text_multi,  tweaks.colors.base .. 'FFSHIFT' .. tweaks.colors.gray .. 'FF - Disable snap to grid') 
+                        renderer.text(self.animate.x + self.animate.w / 2, self.animate.y + self.animate.h / 2, 255, 255, 255, 255, 'cb+', self.text_multi, tweaks.colors.gray .. 'FFX: ' .. tweaks.colors.base .. 'FF' .. self.current.x .. tweaks.colors.gray .. 'FF Y:' .. tweaks.colors.base .. 'FF' .. self.current.y)
+                    end
+                    
+                end
+            end
+            
+            -- --
+            
+            local status, err = pcall(push)
+            if not status then assert(err) end
         end
-
-        paint_queue[id] = self
-
-        self.id = id
-
+        
+        widgets.widgets[id] = self
+        
         return self
     end
-
+    
     client.set_event_callback('paint_ui', function()
-        --if fps < 25 then assert('Low framerate! Render cancelled to avoid memory leaks.') return false end
+        for id, self in pairs(widgets.widgets) do
+            if type(self) ~= 'table' or type(self.push) ~= 'function' then assert('Type error! '.. id) goto continue end
 
-        lerp = lerp or 0
-
-        lerp = Lerp(globals.frametime() * 10, lerp, ui.is_menu_open() and 1 or 0)
-
-        for i,v in pairs(paint_queue) do
-            if type(v) ~= 'table' or not v.push then goto continue end
-
-            local state, err = pcall(v.push)
-            if not state then assert(err) end
+            local status, err = pcall(function() self.push() end)
+            if not status then assert('Error: '.. err) end
 
             ::continue::
-        end
+        end 
     end)
 
-    client.set_event_callback('shutdown', function()
-        for i,v in pairs(paint_queue) do
-            v.shutdown()
-        end
-    end)
-
-    process_end('Widgets library')
+    process_end('Widgets')
 end
 
---widgets.new(nil, nil, nil, nil, nil)
---widgets.new(nil, nil, nil, nil, nil)
---widgets.new(nil, nil, nil, nil, nil)
-
 local t, l = 'Lua', 'A'
-
-ui.new_label(t, l, tweaks.colors.white .. 'FF•' .. tweaks.colors.base .. 'FF Tweaks | '.. tweaks.colors.gray ..'FF' .. tweaks.settings.version)
 
 local tabs do
     process('Tabs')
     local active_tab, combo, tabslist = nil, nil, {}
-
+    
     tabs = {}
     tabs.__index = tabs
-
+    
     tabs.tabs = {}
-
+    
     function tabs.new(name)
         if not name then return false end
         name = tostring(name)
-
+        
         local prev_value
-
+        
         if combo then prev_value = ui.get(combo); ui.set_visible(combo, false) end
-
+        
         table.insert(tabslist, name)
-
+        
         combo = ui.new_combobox(t, 'B', tweaks.colors.white .. 'FF • '.. tweaks.colors.base .. 'FFTweaks' .. tweaks.colors.white .. 'FF »'.. tweaks.colors.gray ..'FF Select tab', unpack(tabslist))
         if prev_value then ui.set(combo, prev_value) end
-
+        
         tabs.tabs[name] = {}
-
+        
         local self = setmetatable({tab = name, elements = tabs.tabs[name]}, tabs)
         
         return self
     end
-
+    
     function tabs:add(element, requirement)
         if not element or not self or type(self) ~= 'table' then return false end
         requirement = requirement or function() return true end
-
+        
         table.insert(self.elements, {element, requirement})
     end
-
-    client.set_event_callback('paint_ui', function()
-        --render.rectangle(64, 64, 256, 256, 255, 255, 255, 100, 10)
-
-        if not ui.is_menu_open() then return false end
     
+    client.set_event_callback('paint_ui', function()
+        if not ui.is_menu_open() then return false end
+        
         for i,v in pairs(tabs.tabs) do
             if type(v) ~= 'table' then assert('Tab ' .. tostring(i) .. ' not table') goto continue end
-    
+            
             for _, element in ipairs(v) do
                 if type(element) ~= 'table' then assert('Element ' .. tostring(_) .. ' not table!') goto continue end
                 if not element[1] or type(element[2]) ~= 'function' then assert('One of elements error') goto continue end
-    
-                --assert('Paint_ui: ' .. tostring(_) .. ': ' .. tostring(element))
-    
+                
                 local success, err = pcall(function() ui.set_visible(element[1], element[2]() and ui.get(combo) == i) end)
                 if not success then assert(err) end
-    
+                
                 ::continue::
             end
-    
+            
             ::continue::
         end
     end)
 
     process_end('Tabs')
 end
-
-local notifications do
-    process('Notifications')
-
-    local scrW, scrH = client.screen_size()
-
-    local notify_h, notify_off = 22, 10
-    local notify_max = 5
-
-    local w, h = 300, (notify_h + notify_off) * notify_max + notify_off
-    local active = {}
-    local show_notify
-    local widget = widgets.new(scrW / 2 - w / 2, 700, w, h, 'notifications', {x = false, y = true}, function()
-    
-        if table.count(active) <= 0 and not show_notify then
-            data = {
-                result = (client.random_int(1, 2) == 1 and true or false),
-                hitgroup = client.random_int(1, #hg - 1),
-                damage = client.random_int(1, 100)
-            }
-
-            data.reason = data.result and nil or 'spread'
-            show_notify = notifications.new(tweaks.colors[data.result and 'green' or 'red'] .. 'FF• ' .. tweaks.colors.gray .. (data.result and 'FFHit ' or 'FFMissed ') .. tweaks.colors.white .. 'FF' .. 'ekzoterik' .. tweaks.colors.gray .. 'FF\'s ' .. tweaks.colors.white .. 'FF' .. hg[data.hitgroup + 1] .. tweaks.colors.gray .. 'FF ~ ' .. tweaks.colors.white .. 'FF' .. (data.result and data.damage or data.reason), -1) 
-        elseif show_notify and table.count(active) > 2 then
-            show_notify.pre_disabled = true
-            show_notify = nil
-        end
-
-    end)
-
-
-    data = {
-            result = (client.random_int(1, 2) == 1 and true or false),
-            hitgroup = client.random_int(1, #hg - 1),
-            damage = client.random_int(1, 100)
-        }
-
-        data.reason = data.result and nil or 'spread'
-
-        local to_shownotify
-
-    notifications = {}
-    notifications.__index = notifications
-
-    function notifications.new(str, timeout)
-        if not str then return false end
-        str = tostring(str)
-
-        timeout = type(timeout) == 'number' and timeout or 5
-        
-
-        if #active >= notify_max then
-            for i,v in ipairs(active) do
-                if not v.disabled then v.disabled = true break end
-            end
-        end
-
-        local self = setmetatable({}, notifications)
-
-        self.start = globals.realtime()
-        self.pre_disabled = false
-        self.disabled = false
-
-        self.lerp = {
-            text = 0.1,
-            global = 0,
-            y = scrH
-        }
-
-        local push = function()
-            if not globals.mapname() then if show_notify ~= self then self:destroy() return false end self.start = globals.realtime() end
-            
-            local state, err = pcall(function() if self.lerp.global < 0 then end end)
-            if not state then assert('Memory check failure, destroying notification..') self:destroy() return false end
-
-            if (globals.realtime() - self.start > (globals.mapname() and timeout or 10) and timeout >= 0) or self.pre_disabled then self.pre_disabled = true; self.disabled = (self.pre_disabled and self.lerp.text <= .2) end
-
-            local tW, tH = renderer.measure_text('', str)
-            local target_y = widget.cord.y + notify_off + ((notify_h + notify_off) * (table.find(active, self) - 1))
-
-            if self.lerp.global <= .05 and self.disabled then self:destroy() end
-            self.lerp.text = Lerp(globals.frametime() * 10, self.lerp.text, self.lerp.global >= .9 and (self.pre_disabled and 0.1 or 1) or 0)
-            self.lerp.global = Lerp(globals.frametime() * 10, self.lerp.global, self.disabled and 0 or 1)
-            self.lerp.y = Lerp(globals.frametime() * 10, self.lerp.y, self.disabled and scrH or target_y)
-            if self.lerp.global >= .95 and not self.disabled then self.lerp.global = 1 end
-
-            local w = (tW + 50) * self.lerp.global
-
-            render.rectangle(scrW / 2 - w / 2, self.lerp.y, w, notify_h, 24, 24, 24, 100 * self.lerp.global, 8)
-            renderer.blur(scrW / 2 - w / 2, self.lerp.y, w, notify_h)
-            render.edge_v(scrW / 2 - w / 2, self.lerp.y, notify_h, 255 * self.lerp.global)
-            if not self.disabled then
-                renderer.text(scrW / 2, self.lerp.y + notify_h / 2, 255, 255, 255, 255, 'c', w * self.lerp.text, str)
-            end
-        end
-
-        self.push = push
-
-        table.insert(active, self)
-
-        return self
-    end
-
-    function notifications:destroy()
-        assert('Removed notification')
-        table.remove(active, table.find(active, self))
-    end
-
-    client.set_event_callback('paint_ui', function()
-        --if fps < 25 then assert('Low framerate! Render cancelled!') return false end
-
-        for i,v in ipairs(active) do
-            if type(v) ~= 'table' or not v.push then goto continue end
-
-            local state, err = pcall(v.push)
-            if not state then assert(err) end
-
-            ::continue::
-        end
-
-        if show_notify and not ui.is_menu_open() then show_notify.pre_disabled = true show_notify = nil end
-    end)
-
-    process_end('Notifications')
-end
-
-local function unpack_event(data)
-    local victim, attacker = data.userid, data.attacker
-    if not victim or not attacker then assert('Event error: Failed to resolve data!') return nil, nil end
-
-    victim, attacker = client.userid_to_entindex(victim), client.userid_to_entindex(attacker)
-    return victim, attacker
-end
-
-local function label(str, tab) local lbl = ui.new_label(t, l, tweaks.colors.white .. 'FF • »'.. tweaks.colors.base ..'FF '.. str) tab:add(lbl) end
-
-local function contain(element, needle) return table.find(ui.get(element), needle) end
+local function format(space, value) return tweaks.colors.gray ..'FF' .. space .. tweaks.colors.white .. 'FF » ' .. tweaks.colors.base .. 'FF' .. value end
 
 --[[
 
-    MISC
+    M   I   S   C
 
 ]]
 
 local misc = tabs.new('Misc')
 
-local filter = ui.new_checkbox(t, l, 'Filter console')
-misc:add(filter)
+local trashtalk do
+    process('Trash-talk')
 
-ui.set_callback(filter, function()
-    local _ = ui.get(filter)
-    
-    cvar.con_filter_enable:set_int(_ and 1 or 0)
-	cvar.con_filter_text:set_string(_ and 'tweaks.lua' or '')
-end)
-
-local hitsound do
-    process('Hit-sound')
-    label('Hit-sound', misc)
-    local checkbox = ui.new_checkbox(t, l, 'Enable custom hit-sound')
+    local checkbox = ui.new_checkbox(t, l, 'Enable Trash-talk')
     misc:add(checkbox)
 
-    local sounds = {
+    process('Trash-talk > Presets')
 
-    }
+    local unpack_presets, unpack_events = {}, {}
 
-    local unpack_ = {}
+    for name, preset in pairs(tweaks.presets.trashtalk) do 
+        assert('New preset: '.. name)
 
-    local function new(sound)
-        local norm = normal_sound(sound)
-		sounds[norm] = sound
-        table.insert(unpack_, norm)
+        table.insert(unpack_presets, name)
+
+        for event, phrases in pairs(preset) do
+        
+        if not table.find(unpack_events, event) then assert('New event: '.. event) table.insert(unpack_events, event) end
+
+        --[[    for i, phrase in ipairs(phrases) do-- В будующем здесь возможно что-то будет
+                assert('New phrase: ' .. tostring(phrase) .. ':' .. type(phrase))
+            end ]]
+        end
     end
-    
-    for i,sound in ipairs(tweaks.presets.hitsounds) do
-        local norm = normal_sound(sound)
-		sounds[norm] = sound
-        table.insert(unpack_, norm)
-    end
 
-    local sound = ui.new_combobox(t, l, 'Custom Hit-Sound', unpack(unpack_))
-    misc:add(sound, function() return ui.get(checkbox) end)
+    if #unpack_presets <= 0 then unpack_presets = {'No presets!'} end
+    if #unpack_events <= 0 then unpack_events = {'No events!'} end
+
+    local preset = ui.new_combobox(t, l, format('Trash-talk', 'Preset'), unpack(unpack_presets))
+    local events = ui.new_multiselect(t, l, format('Trash-talk', 'Events'), unpack(unpack_events))
+    misc:add(events, function() return ui.get(checkbox) end)
+    misc:add(preset, function() return ui.get(checkbox) end)
+
+    local function get_preset(field, player)
+        local preset = tweaks.presets.trashtalk[ui.get(preset)]
+        if not preset[field] then return false end
+
+        if #preset[field] <= 1 then return preset[field][1] or '?' end
+
+        local phrase = preset[field][client.random_int(1, #preset[field])]
+
+        if type(phrase) == 'function' then phrase = phrase(player) end
+        return phrase
+    end
 
     ui.set_callback(checkbox, function()
-        local _ = ui.get(checkbox)
+        local v = ui.get(checkbox)
 
-        client[(_ and 'set' or 'unset') .. '_event_callback']('aim_hit', function()
-            assert('Playsound')
-            playsound(sounds[ui.get(sound)])
+        client[(v and 'set' or 'unset') .. '_event_callback']('player_death', function(data)
+        
+            local vid, aid = data.userid, data.attacker
+            if not vid or not aid then return false end
+
+            local victim, attacker = client.userid_to_entindex(vid), client.userid_to_entindex(aid)
+
+            if entity.is_enemy(victim) and attacker == entity.get_local_player() and table.find(ui.get(events), 'Kill') then
+                assert('Trash-talk (kill)')
+
+                local phrase = get_preset('Kill', victim)
+
+                if not phrase then return false end
+                client.delay_call(.3, function() client.exec('say ', string.format(phrase, entity.get_player_name(victim))) end)
+            elseif entity.is_enemy(attacker) and victim == entity.get_local_player() and table.find(ui.get(events), 'Death') then
+                assert('Trash-talk (death)')
+                
+                local phrase = get_preset('Death', attacker)
+
+                if not phrase then return false end
+                client.delay_call(.3, function() client.exec('say ', string.format(phrase, entity.get_player_name(attacker))) end)
+            else
+                assert('Trash-talk (skip)')
+            end
+
         end)
     end)
 
-    process_end('Hit-sound')
-end
-
-local trashtalk do
-    process('Trash-talk')
-    label('Trash-Talk', misc)
-
-    local checkbox = ui.new_checkbox(t, l, 'Enable trash-talk')
-    misc:add(checkbox)
-
-    local presets do presets = {} for i,v in pairs(tweaks.presets.trashtalk) do table.insert(presets, i) end end
-
-    local preset = ui.new_combobox(t, l, 'Trash-talk preset', unpack(presets))
-    local events = ui.new_multiselect(t, l, 'TT Triggers', 'Kill', 'Death')
-    misc:add(preset, function() return ui.get(checkbox) end)
-    misc:add(events, function() return ui.get(checkbox) end)
-
-    local function get_phrase(tbl)
-        local _preset = tweaks.presets.trashtalk[ui.get(preset)]
-
-        local result = ''
-
-        if not _preset[tbl] then assert('Phrase: Failed to find ' .. tostring(tbl) .. ' in preset!') return false end
-        if type(_preset[tbl]) == 'string' then _preset[tbl] = {_preset[tbl]} end
-        if type(_preset[tbl]) ~= 'table' then return false end
-        if #_preset[tbl] <= 1 then assert('Phrase: Preset must have more than 1 phrase! ' .. tostring(tbl)) result = _preset[tbl][1] else result = _preset[tbl][client.random_int(1, #_preset[tbl])] end
-
-        local function proc(phrase)
-            if type(phrase) == 'function' then phrase = phrase() end
-            
-            return phrase
-        end
-
-        return proc(result) 
-    end
-
-    local push = function(data)
-        if #ui.get(events) <= 0 then return false end
-
-        assert('Event: Obsfucating player_death')
-
-        local victim, attacker = unpack_event(data)
-
-        if not victim or not attacker then assert('Event error: Failed to resolve data!') return false end
-
-        if entity.is_enemy(victim) and attacker == entity.get_local_player() and contain(events, 'Kill') then
-            assert('Info: Trash talk (kill)')
-
-            local phrase = get_phrase('kill')
-            if not phrase then return false end
-
-            client.exec('say ' .. string.format(phrase, entity.get_player_name(victim)))
-        elseif entity.is_enemy(attacker) and victim == entity.get_local_player() and contain(events, 'Death') then
-            assert('Info: Trash talk (death)')
-
-            local phrase = get_phrase('death')
-            if not phrase then return false end
-
-            client.exec('say ' .. string.format(phase, entity.get_player_name(attacker)))
-        elseif tweaks.settings.dev then
-            tweaks.print('Info: skip')
-        end
-
-        assert('Event: player_death (end)')
-    end
-
-    ui.set_callback(checkbox, function()
-        local value = ui.get(checkbox)
-
-        client[(value and 'set' or 'unset') .. '_event_callback']('player_death', push)
-    end)
-
-    trashtalk = {checkbox, preset, events}
     process_end('Trash-talk')
-end
-
-local logger do
-    process('Logger')
-    label('Logger', misc)
-
-    local checkbox = ui.new_checkbox(t, l, 'Enable logger')
-    local outcome = ui.new_multiselect(t, l, 'Logger outcome', 'Notification', 'Console')
-    misc:add(checkbox)
-
-
-    local events_data = {
-        ['Ragebot'] = function(data)
-
-            local outcome_ = {
-                ['Console'] = function()
-                    local hp_left = entity.get_esp_data(data.target).health
-                    
-                    tweaks.print((data.result and 'Hit in ' or 'Missed '), tweaks.colors.white .. entity.get_player_name(data.target), '\'s ', tweaks.colors.white .. hg[data.hitgroup + 1], (data.result and ' for ' .. tweaks.colors.white .. data.damage .. tweaks.colors.gray .. 'hp (' .. (hp_left or '?') .. 'hp left) ' or ' '), '~ ', (data.reason and data.reason .. ', ' or ''), ((data.hitgroup + 1 ~= data.shot.hitgroup + 1 or data.damage ~= data.shot.damage) and 'exp: ' .. tweaks.colors.white .. hg[data.shot.hitgroup + 1] .. '-' .. data.shot.damage .. ', ' or ''), 'hc: ', tweaks.colors.white .. string.format('%.2f', data.hit_chance) .. '%%', ', ', '△ ~ ', data.shot.backtrack, 't')
-                    
-                    if not entity.is_alive(data.target) and data.result then tweaks.print('Killed ', tweaks.colors.white .. entity.get_player_name(data.target), tweaks.colors.gray .. ' in ', tweaks.colors.white .. hg[data.hitgroup + 1]) end
-                end,
-                ['Notification'] = function()
-
-                    notifications.new(tweaks.colors[data.result and 'green' or 'red'] .. 'FF• ' .. tweaks.colors.gray .. (data.result and 'FFHit ' or 'FFMissed ') .. tweaks.colors.white .. 'FF' .. entity.get_player_name(data.target) .. tweaks.colors.gray .. 'FF\'s ' .. tweaks.colors.white .. 'FF' .. hg[data.hitgroup + 1] .. tweaks.colors.gray .. 'FF ~ ' .. tweaks.colors.white .. 'FF' .. (data.result and data.damage or data.reason))
-
-                    if not entity.is_alive(data.target) and data.result then
-                        notifications.new(tweaks.colors.purple .. 'FF• ' .. tweaks.colors.gray .. 'FFKilled ' .. tweaks.colors.white .. 'FF' .. entity.get_player_name(data.target) .. tweaks.colors.gray ..'FF in ' .. tweaks.colors.white ..'FF' .. hg[data.hitgroup + 1])
-                    end
-                end
-            }
-
-            for i, v in ipairs(ui.get(outcome)) do
-                if outcome_[v] then
-                    outcome_[v]()
-                end
-            end
-        end,
-        ['Got damage'] = function(data)
-            local outcome_ = {
-                ['Console'] = function()
-                    if data.result then 
-                        tweaks.print('You was killed by ' .. tweaks.colors.white .. entity.get_player_name(data.aen))
-                    else
-                        tweaks.print(tweaks.colors.white .. entity.get_player_name(data.aen) .. tweaks.colors.gray .. ' damaged you for ' .. tweaks.colors.white .. data.dmg_health .. tweaks.colors.gray .. ' ~ ' .. tweaks.colors.white .. hg[data.hitgroup + 1])
-                    end 
-                end,
-                ['Notification'] = function()
-    
-                    if data.result then
-                        notifications.new(tweaks.colors.red .. 'FF•'.. tweaks.colors.gray ..'FF Killed by ' .. tweaks.colors.white ..'FF'.. entity.get_player_name(data.aen))
-                    else
-                        notifications.new(tweaks.colors.red .. 'FF•'.. tweaks.colors.white ..'FF ' .. entity.get_player_name(data.aen) .. tweaks.colors.gray .. 'FF damaged you for ' .. tweaks.colors.white .. 'FF' .. data.dmg_health .. tweaks.colors.gray .. 'FF ~ ' .. tweaks.colors.white .. 'FF' .. hg[data.hitgroup + 1])
-                    end
-                end
-            }
-    
-            for i, v in ipairs(ui.get(outcome)) do
-                if outcome_[v] then
-                    outcome_[v]()
-                end
-            end
-        end,
-        }
-
-    local _events do _events = {} for i,v in pairs(events_data) do table.insert(_events, i) end end
-
-    local events = ui.new_multiselect(t, l, 'Logger events', unpack(_events))
-    misc:add(events, function() return ui.get(checkbox) end)
-    misc:add(outcome, function() return ui.get(checkbox) end)
-
-    local function event_fire(event, data)
-        if not contain(events, event) or not events_data[event] or not ui.get(checkbox) then return false end
-        
-        assert('Events-logger: sent '.. event)
-
-        events_data[event](data)
-    end
-
-    local aim_log = {}
-
-    client.set_event_callback('aim_fire', function(shot) shot.backtrack = globals.tickcount() - shot.tick aim_log[shot.id] = shot end)
-
-    client.set_event_callback('aim_hit', function(data)
-        local full = aim_log[data.id]
-
-        data.result = true
-        data.shot = full
-
-        event_fire('Ragebot', data)
-    end)
-
-    client.set_event_callback('aim_miss', function(data)
-        local full = aim_log[data.id]
-
-        data.result = false
-        data.shot = full
-
-        event_fire('Ragebot', data)
-    end)
-
-    client.set_event_callback('player_death', function(data)
-        local ven, aen = unpack_event(data)
-
-        if not ven or not aen then return false end
-        if ven == entity.get_local_player() and entity.is_enemy(aen) then
-            data.aen = aen
-            data.result = true
-            event_fire('Got damage', data)
-        end
-    end)
-
-    client.set_event_callback('player_hurt', function(data)
-        local ven, aen = unpack_event(data)
-
-        if not ven or not aen then return false end
-        if ven == entity.get_local_player() and entity.is_enemy(aen) then
-            data.aen = aen
-            data.result = false
-            event_fire('Got damage', data)
-        end
-    end)
-
-    process_end('Logger')
 end
 
 local clantag do
     process('Clan-tag')
-    label('Clan-tag', misc)
 
-    local checkbox = ui.new_checkbox(t, l, 'Enable clan-tag')
+    local checkbox = ui.new_checkbox(t, l, 'Enable Clan-tag')
     misc:add(checkbox)
 
-    process('Clan-tag presets')
+    process('Clan-tag > Presets')
+
+    local unpack_presets = {}
+    local history = {}
+
+    -- PRESETS RESOLVER:
+
+    local resolvers = {
+        ['^>> '] = function(tag, preset)
+
+            should_remove = string.find(tag, ':')
+
+            tag = string.gsub(tag, '^>> ', '')
+            local solve = ''
+
+            if string.find(tag, '@:.$') then
+                local tag = string.gsub(tag, '@([^@]*)$', '%1')
+                table.insert(history, tag)
+                table.insert(preset, tag)
+
+                assert(tag)
+
+                return true 
+            end
+            
+            local split = string.split(tag, ':')
+            
+            if #split > 1 then
+                solve = split[#split]
+            end
+
+            tag = string.sub(tag, 1, #tag - #solve - (should_remove and 1 or 0))
+
+            local result = ''
+
+            table.remove(split, #split)
+
+            for char in tag:gmatch('.') do
+                result = result .. char
+
+                local gtag = result .. solve
+
+                table.insert(history, gtag)
+                table.insert(preset, gtag)
+
+                assert(gtag)
+            end
+            
+            return true
+        end,
+        ['^<<'] = function(tag, preset)
+            
+            local history = table.reverse(history)
+
+            for i, tag in ipairs(history) do
+                table.insert(preset, tag)
+                assert(tag)
+            end
+
+            history = {}
+
+            return true
+        end
+    }
 
     local presets = {}
 
-    local unpack_ = {}
+    for name, preset in pairs(tweaks.presets.clantag) do 
+        unpack_presets[name] = unpack_presets[name] or {}
+        table.insert(presets, name)
+        history= {}
 
-    for ins, preset in pairs(tweaks.presets.clantag) do
-        table.insert(unpack_, ins)
-        presets[ins] = {}
-        local reverse_table = {}
+        local preset = {}
 
-        for _, tag in ipairs(preset) do
-            if string.find(tag, '^>> ') then
-                assert('Auto!')
-                local _tag = string.gsub(tag, '^>> ', '', 1)
+        for i, tag in ipairs(tweaks.presets.clantag[name]) do
+            
+            if type(tag) == 'function' then tag = tag(history) end 
 
-                local str = ''
-                table.insert(presets[ins], str)
-
-                for char in _tag:gmatch('.') do
-                    str = str .. char
-                    table.insert(presets[ins], str)
-                    table.insert(reverse_table, str)
-                    assert(str)
-                end
-            elseif tag == '<<' then
-                assert('Reverse!')
-
-                reverse_table = table.Reverse(reverse_table)
-
-                for _, _tag in ipairs(reverse_table) do
-                    table.insert(presets[ins], _tag)
-                    assert(_tag)
+            if type(tag) == 'table' then 
+                for index, element in ipairs(tag) do
+                    table.insert(tweaks.presets.clantag[name], element)
                 end
 
-                reverse_table = {}
-            else
-                assert(tag)
-                table.insert(presets[ins], tag)
-                table.insert(reverse_table, tag)
+                goto continue
             end
+
+            for resolver, callback in pairs(resolvers) do
+                if string.find(tag, resolver) then callback(tag, preset) goto continue end
+            end
+
+            table.insert(history, tag)
+            table.insert(preset, tag)
+
+            assert(tag)
+
+            ::continue::
+
         end
+
+        unpack_presets[name] = preset
     end
 
-    local preset = ui.new_combobox(t, l, 'Clan-tag preset', unpack(unpack_))
+    if #presets <= 0 then presets = {'No presets!'} end
+
+    -- --
+
+    local preset = ui.new_combobox(t, l, format('Clan-tag', 'Preset'), unpack(presets))
+    local refresh = ui.new_slider(t, l, format('Clan-tag', 'Refresh rate'), 1, 250, 5, true, nil, .1, true)
+
     misc:add(preset, function() return ui.get(checkbox) end)
+    misc:add(refresh, function() return ui.get(checkbox) end)
     local last
 
-    local push = function()
-        local tag = presets[ui.get(preset)]
     
-        local time = math.floor(globals.curtime() * 4 + 0.5)
-        local i = time % #tag + 1
-        if i == last then return end
-        last = i
-        client.set_clan_tag(tag[i])
-    end
-
     ui.set_callback(checkbox, function()
-        local _ = ui.get(checkbox)
+        local v = ui.get(checkbox)
 
-        client[(_ and 'set' or 'unset') .. '_event_callback']('net_update_end', push)
+        client[(v and 'set' or 'unset') .. '_event_callback']('net_update_start', function()
+            local tag = unpack_presets[ui.get(preset)]
 
-        if not _ then client.set_clan_tag('') end
-    end)
+            if not tag then return false end
     
+            local time = math.floor(globals.curtime() * ui.get(refresh) + 0.5)
+            local i = time % #tag + 1
+
+            if i == last then return false end
+
+            last = i
+            client.set_clan_tag(tag[i])
+        end)
+
+        if not v then client.set_clan_tag('') end
+    end)
+
     process_end('Clan-tag')
 end
 
-local autobuy do
-    process('Auto-buy')
-    label('Auto-buy', misc)
-
-    local checkbox = ui.new_checkbox(t, l, 'Enable auto-buy')
-    misc:add(checkbox)
-
-    local sets = {
-        Main = {
-            ['None']= 'none',
-            ['SSG 08'] = 'ssg08',
-            ['AWP'] = 'awp',
-            ['AUTO'] = 'scar20',
-        },
-        Pistols = {
-            ['None'] = 'none',
-            ['Deagle/R8'] = 'deagle',
-        },
-        Misc = {
-            ['Armor'] = 'vesthelm',
-            ['Smoke'] = 'smokegrenade',
-            ['Flashbang'] = 'flashbang',
-            ['Molotov'] = 'molotov',
-            ['He grenade'] = 'hegrenade',
-            ['Taser'] = 'taser',
-            ['Defuse kit'] = 'defuser'
-        }
-    }
-
-    local unpack_ do 
-        unpack_ = {}
-        for i,v in pairs(sets) do 
-            unpack_[i] = {} 
-            for _, weap in pairs(v) do 
-                table.insert(unpack_[i], _) 
-            end
-        end 
-    end
-
-    local main = ui.new_combobox(t, l, 'Main weapon', unpack(unpack_['Main']))
-    local pistol = ui.new_combobox(t, l, 'Pistol', unpack(unpack_['Pistols']))
-    local misc_weap = ui.new_multiselect(t, l, 'Other', unpack(unpack_['Misc']))
-
-    misc:add(main, function() return ui.get(checkbox) end)
-    misc:add(pistol, function() return ui.get(checkbox) end)
-    misc:add(misc_weap, function() return ui.get(checkbox) end)
-
-    local buybot_push = function()
-        local buy_queue = {
-            [main] = sets.Main,
-            [pistol] = sets.Pistols,
-            [misc_weap] = sets.Misc,
-        }
-        
-        local function buy(weapon, table)
-            if weapon == 'none' then assert('None! Skipping.') return false end
-            assert('Buy: ' .. weapon .. ' ' .. table[weapon])
-            client.exec('buy '.. table[weapon])    
-        end
-
-        for i,v in pairs(buy_queue) do
-            local weapons = ui.get(i)
-            
-            if type(weapons) == 'table' then
-                for _, weap in ipairs(weapons) do
-                    buy(weap, v)
-                end
-            else
-                buy(weapons, v)
-            end
-        end
-    end
-
-    local push = function(data)
-        assert('Spawn: '.. data.userid)
-        if client.userid_to_entindex(data.userid) ~= entity.get_local_player() then return false end
-
-        assert('Buybot')
-
-        client.delay_call(.5, buybot_push) -- Avoiding delay between "buy" command work
-    end
-
-    ui.set_callback(checkbox, function()
-        local _ = ui.get(checkbox)
-
-        client[(_ and 'set' or 'unset') .. '_event_callback']('player_spawn', push)
-    end)
-
-    process_end('Auto-buy')
-end
-
-client.set_event_callback('shutdown', function() client.set_clan_tag('') end)
-
 --[[
 
-    VISUALS
+    V   I   S   U   A   L   S
 
 ]]
 
 local visuals = tabs.new('Visuals')
 
-local watermark do
-    process('Watermark')
-    label('Watermark', visuals)
-    local checkbox = ui.new_checkbox(t, l, 'Watermark')
+local hitlog do
+    process('Hit-logs')
+
+    local checkbox = ui.new_checkbox(t, l, 'Enable hit-logs')
     visuals:add(checkbox)
+    
+    local ui_output, widget
 
-    local content_data = {}
+    local logs = {}
 
-    local content = {
-        Bow = function(x, y, w, h)
-            render.rectangle(x, y + (h - 26) / 2, 26, 26, 34, 34, 34, 255, 4)
-            renderer.texture(bow, x + 3, y + (h - 20) / 2, 20, 20, 255, 255, 255, 255, 'f')
-            return 26
+    local output = {
+        ['Console'] = function(str) if table.find(ui.get(ui_output), 'Console') and ui.get(checkbox) then tweaks.print(str) end end,
+        ['Screen'] = function(str) if table.find(ui.get(ui_output), 'Screen') and ui.get(checkbox) then table.insert(logs, {
+            text = str
+        }) end end,
+    }
+
+    local events = {
+        ['Ragebot'] = function(hit, data)
+            output.Console(string.format(
+                tweaks.colors[hit and 'green' or 'red'] .. '• ' .. tweaks.colors.gray .. '%s ' .. tweaks.colors.base .. '%s' .. tweaks.colors.gray .. '\'s ' .. tweaks.colors.base .. '%s ' .. tweaks.colors.gray ..'for ' .. tweaks.colors.base .. '%s' .. tweaks.colors.gray .. ' hp (%s hp left) ' .. tweaks.colors.base .. '~' .. tweaks.colors.gray .. '%s%s %s',
+                (hit and 'Hit' or 'Missed'),
+                entity.get_player_name(data.target),
+                hg[data.hitgroup + 1] or '?',
+                (data.damage or data.shot.damage),
+                entity.get_prop(data.target, 'm_iHealth'),
+                (hit and '' or ' ' .. data.reason .. ','),
+                data.hitgroup ~= data.shot.hitgroup and (' exp:' .. tweaks.colors.base .. ' ' .. hg[data.shot.hitgroup+1] .. '-' .. data.shot.damage .. tweaks.colors.gray .. ', ') or '',
+                tweaks.colors.base .. (data.backtrack or data.shot.backtrack) .. tweaks.colors.gray .. 't'
+            ))
+
+            output.Screen(string.format(
+                tweaks.colors.gray .. 'FF%s ' .. tweaks.colors.base .. 'FF%s' .. tweaks.colors.gray .. 'FF\'s ' .. tweaks.colors.base .. 'FF%s ' .. tweaks.colors.gray ..'FFfor ' .. tweaks.colors.base .. 'FF%s' .. tweaks.colors.gray .. 'FF hp %s',
+                (hit and 'Hit' or 'Missed'),
+                entity.get_player_name(data.target),
+                hg[data.hitgroup + 1] or '?',
+                (data.damage or data.shot.damage),
+                (hit and '' or tweaks.colors.base .. 'FF~ ' .. tweaks.colors.gray .. 'FF' .. data.reason)
+            ))
+
+            if not entity.is_alive(data.target) then
+                output.Console(string.format(
+                    tweaks.colors.base .. '• ' .. tweaks.colors.gray .. 'You killed ' .. tweaks.colors.base .. '%s' .. tweaks.colors.gray .. ' in ' .. tweaks.colors.base .. '%s' .. tweaks.colors.gray .. '!',
+                    entity.get_player_name(data.target),
+                    hg[data.hitgroup + 1] or '?'
+                ))
+
+                output.Screen(string.format(
+                    tweaks.colors.gray .. 'FFYou killed ' .. tweaks.colors.base .. 'FF%s' .. tweaks.colors.gray .. 'FF in ' .. tweaks.colors.base .. 'FF%s' .. tweaks.colors.gray .. 'FF!',
+                    entity.get_player_name(data.target),
+                    hg[data.hitgroup + 1] or '?'
+                ))
+            end
         end,
-        Ping = function(x, y, w, h)
-            local str = math.floor(client.latency() * 1000) .. tweaks.colors.gray .. 'FF ms'
+        ['Damage'] = function(data)
+            output.Console(string.format(
+                tweaks.colors.red .. '• ' .. tweaks.colors.base .. '%s' .. tweaks.colors.gray .. ' damaged ' .. tweaks.colors.base .. 'You' .. tweaks.colors.gray .. ' in ' .. tweaks.colors.base .. '%s' .. tweaks.colors.gray .. ' for ' .. tweaks.colors.base .. '%s' .. tweaks.colors.gray .. 'hp',
+                entity.get_player_name(data.attacker),
+                hg[data.hitgroup + 1],
+                (data.dmg_health or 0)
+            ))
 
-            local tW, tH = renderer.measure_text('', str)
+            output.Screen(string.format(
+                tweaks.colors.base .. 'FF%s' .. tweaks.colors.gray .. 'FF damaged ' .. tweaks.colors.base .. 'FFYou' .. tweaks.colors.gray .. 'FF in ' .. tweaks.colors.base .. 'FF%s' .. tweaks.colors.gray .. 'FF (' .. tweaks.colors.base .. 'FF%s' .. tweaks.colors.gray .. 'FFhp)',
+                entity.get_player_name(data.attacker),
+                hg[data.hitgroup + 1],
+                (data.dmg_health or 0)
+            ))
 
-            local rW, rY = tW + 23, y + (h - 23) / 2 
-
-            content_data['ping'] = content_data['ping'] or {}
-            content_data.ping.w = Lerp(globals.frametime() * 10, content_data.ping.w, rW)
-
-            render.rectangle(x, rY, content_data.ping.w, 23, 34, 34, 34, 200, 4)
-            --render.edge_v(x, rY, 23, 255)
-            renderer.text(x + rW / 2, rY + tH, 255, 255, 255, 255, 'c', content_data.ping.w, str)
-
-            return rW
-        end,
-        Time = function(x, y, w, h, l)
-            local hour, m, s, ms = client.system_time()
-
-            hour, m = string.format('%02d', hour), string.format('%02d', m)
-
-            local str = hour .. tweaks.colors.gray .. 'FF:' .. m
-
-            local tW, tH = renderer.measure_text('', str)
-
-            local rW, rY = tW + 23, y + (h - 23) / 2 
-
-            content_data['time'] = content_data['time'] or {}
-            content_data.time.w = Lerp(globals.frametime() * 10, content_data.time.w, rW)
-
-            render.rectangle(x, rY, content_data.time.w, 23, 34, 34, 34, 200, 4)
-            --render.edge_v(x, rY, 23, 255)            
-            renderer.text(x + rW / 2, rY + tH, 255, 255, 255, 255, 'c', content_data.time.w, str)
-
-            return rW
+            if data.health <= 0 then
+                output.Console(string.format(
+                    tweaks.colors.red .. '• ' .. tweaks.colors.base .. '%s' .. tweaks.colors.gray .. ' killed ' .. tweaks.colors.base .. 'You' .. tweaks.colors.gray .. ' in ' .. tweaks.colors.base .. '%s',
+                    entity.get_player_name(data.attacker),
+                    hg[data.hitgroup + 1]
+                ))
+                output.Screen(string.format(
+                    tweaks.colors.base .. 'FF%s' .. tweaks.colors.gray .. 'FF killed ' .. tweaks.colors.base .. 'FFYou' .. tweaks.colors.gray .. 'FF in ' .. tweaks.colors.base .. 'FF%s',
+                    entity.get_player_name(data.attacker),
+                    hg[data.hitgroup + 1]
+                ))
+            end
         end,
     }
-    
-    local _content do _content = {} for i,v in pairs(content) do table.insert(_content, i) end end
-    
-    table.remove(_content, table.find(_content, 'Bow'))
-    table.insert(_content, 1, 'Bow')
 
-    local container = ui.new_multiselect(t, l, 'Content', unpack(_content))
-    visuals:add(container, function() return ui.get(checkbox) end)
+    local unpack_events, unpack_output = {}, {}
+
+    for i, v in pairs(output) do table.insert(unpack_output, i) end 
+    for i, v in pairs(events) do table.insert(unpack_events, i) end
+
+    local ui_events = ui.new_multiselect(t, l, format('Hit-logs', 'Events'), unpack(unpack_events))
+    ui_output = ui.new_multiselect(t, l, format('Hit-logs', 'Output'), unpack(unpack_output))
+
+    visuals:add(ui_events, function() return ui.get(checkbox) end)
+    visuals:add(ui_output, function() return ui.get(checkbox) end)
+
+    local connected = {}
+
+    local aim_log = {}
+
+    -- RAGEBOT:
+
+    client.set_event_callback('aim_fire', function(data) aim_log[data.id] = data end)
+    client.set_event_callback('aim_miss', function(data)
+        if not aim_log[data.id] or not table.find(ui.get(ui_events), 'Ragebot') or not ui.get(checkbox) then return false end
+
+        local full = data
+        full.shot = aim_log[data.id]        
+        full.backtrack = globals.tickcount() - full.shot.tick 
+
+        events.Ragebot(false, full)
+    end)
+    client.set_event_callback('aim_hit', function(data)
+        if not aim_log[data.id] or not table.find(ui.get(ui_events), 'Ragebot') or not ui.get(checkbox) then return false end
+
+        local full = data
+        full.shot = aim_log[data.id]        
+        full.backtrack = globals.tickcount() - full.shot.tick  
+
+        events.Ragebot(true, full)
+    end)
+
+    -- DAMAGE:
+
+    client.set_event_callback('player_hurt', function(data)
+        if not ui.get(checkbox) or not table.find(ui.get(ui_events), 'Damage') then return false end
+
+        local vid, aid = data.userid, data.attacker
+        if not vid or not aid then return false end
+
+        local victim, attacker = client.userid_to_entindex(vid), client.userid_to_entindex(aid)
+
+        data.attacker = attacker
+
+        if victim == entity.get_local_player() and entity.is_enemy(attacker) then events.Damage(data) end
+    end)
+
+    -- --
 
     local scrW, scrH = client.screen_size()
 
-    local w, h = 10, 29
-    local x, y = scrW - w - 30, h / 2
+    local w, h = 400, 150
+    local x, y = scrW / 2 - w / 2, scrH - h - 200
 
-    local start_w = w
+    local function render_log(i, data)
+        local anim = widget.animate
+        local x, y, w, h = anim.x, anim.y, anim.w, anim.h
 
-    local widget
+        if #logs >= i + 4 then data.disabled = true end
 
-    local function compensate() return true end
+        local tW, tH = renderer.measure_text('c', data.text)
 
-    local push = function()
-        if not widget or not widget.cord_lerp or not widget.cord_lerp.x or not widget.cord or not widget.cord.x then assert('Memory leak! Push cancelled to avoid errors!') return false end
+        data.start = data.start or client.timestamp()
+        data.timeout = data.timeout or 5000
+        data.pos_lerp = data.pos_lerp or .75
+        data.alpha_lerp = data.alpha_lerp or 0
+        data.widht = data.widht or 1
 
-        local x, y, w, h = widget.cord_lerp.x, widget.cord_lerp.y, widget.cord_lerp.w, widget.cord_lerp.h
-
-        local content_ = ui.get(container)
-        --if #content_ <= 0 then assert('Container empty! Skip') return false end
+        if data.disabled and data.alpha_lerp < .05 then table.remove(logs, i) return false end
         
-        local new_w = start_w
+        data.alpha_lerp = Lerp(globals.frametime() * 10, data.alpha_lerp, data.disabled and 0 or 1)
+        data.pos_lerp = Lerp(globals.frametime() * 4, data.pos_lerp, data.disabled and 2 or 1)
+        
+        local w, h = (15 + tW) * data.alpha_lerp, 24
+        w = math.floor(w)
+        
+        data.widht = Lerp(globals.frametime() * 10, data.widht, data.disabled and 1 or w)
+        data.y_pos = data.y_pos or y + h
+        data.x_pos = data.x_pos or anim.x + (anim.w / 2 - w / 2)
+        data.x_pos = Lerp(globals.frametime() * 10, data.x_pos, anim.x + (anim.w / 2 - w / 2))
+        data.y_pos = Lerp(globals.frametime() * 10, data.y_pos, y + 10 + (h * 1.5 * (i - 1)))
+        
+        render.rectangle(data.x_pos, data.y_pos * data.pos_lerp, w, h, 0, 0, 0, 125 * data.alpha_lerp, 4)
+        renderer.text(data.x_pos + w / 2, (data.y_pos + h / 2) *  data.pos_lerp, 255, 255, 255, 255, 'c', data.widht, data.text)
 
-        for i,v in ipairs(content_) do
-            if type(content[v]) == 'function' then
-                local status, err = pcall(content[v], x + new_w - start_w / 2 + 2.5 * i, y, w, h) 
-
-                if not status then 
-                    assert(err) 
-                else
-                    new_w = new_w + err + 5
-                end
-            end
-
-            ::continue::
-        end
-
-        widget.cord.x = Lerp(globals.frametime() * 10, widget.cord.x, widget.cord.x - (new_w - widget.cord.w))
-        widget.cord.w = Lerp(globals.frametime() * 10, widget.cord.w, new_w)
-
-        compensate = function()
-            ui.set(widget.ui.x, widget.cord.x + widget.cord.w - start_w + (0.625 * (#content_ > 0 and 1 or 0)))
-        end
-
-        widget.shutdown = compensate
+        if client.timestamp() - data.start >= data.timeout then data.disabled = true end
     end
-    
-    local push = function() local status, err = pcall(push) if not status then assert(err) end end
 
-    widget = widgets.new(x, y, w, h, 'tweaks-watermark', {x = true, y = true}, nil, 4, compensate)
+    widget = widgets.new('hit_log', function()
 
-    widget.paint = false
+        for i, data in ipairs(logs) do
+            local status, err = pcall(function() return render_log(i, data) end)
+            if not status then assert(err) end
+        end
+        
+    end, x, y, w, h, nil, true, true)
 
     ui.set_callback(checkbox, function()
-        --if fps < 25 then assert('Low framerate! Render cancelled to avoid memory leaks.') return false end
-        local _ = ui.get(checkbox)
-
-        widget.paint = _
-
-        --client[(_ and 'set' or 'unset') .. '_event_callback']('paint_ui', push)
+        widget.paint = ui.get(checkbox)
     end)
 
-    client.set_event_callback('paint_ui', push)
+    widget.paint = ui.get(checkbox)
 
-    process_end('Watermark')
+    process_end('Hit-logs')
 end
 
-tweaks.print('Processed! '.. tweaks.colors.white ..'(' .. string.format('%.2f', client.timestamp() - tweaks.start) .. 's)')
-notifications.new(tweaks.colors.green ..'FF• '.. tweaks.colors.gray ..'FFProcessed! '.. tweaks.colors.white ..'FF' .. string.format('%.2f', client.timestamp() - tweaks.start) .. 's')
+--[[ -- -- -- -- -- -- END: -- -- -- -- -- --  ]]--
+
+printf('')
+process_end('Tweaks.lua')
